@@ -11,8 +11,10 @@ const SUPABASE_ANON_KEY = "sb_publishable_5yYmeug74cM3G8GiIkIh5A_PKIKjgpR";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 async function createRegistration(data) {
-  const registrationId = "KJC2026-" + crypto.randomUUID().slice(0, 8).toUpperCase();
-  const { data: row, error } = await supabaseClient
+  const registrationId =
+    "KJC2026-" + crypto.randomUUID().slice(0, 8).toUpperCase();
+
+  const { error } = await supabaseClient
     .from("registrations")
     .insert({
       registration_id: registrationId,
@@ -24,10 +26,10 @@ async function createRegistration(data) {
       event_name: data.event,
       amount: 40,
       payment_status: "PENDING"
-    })
-    .select("registration_id")
-    .single();
+    });
 
   if (error) throw error;
-  return row.registration_id;
+
+  return registrationId;
+}
 }
