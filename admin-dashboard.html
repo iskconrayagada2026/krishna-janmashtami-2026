@@ -66,15 +66,27 @@
 
   <script>
   async function checkAdmin() {
-    const { data: { user } } = await supabaseClient.auth.getUser();
+  const { data: { user } } = await supabaseClient.auth.getUser();
 
-    if (!user) {
-      window.location.href = "admin.html";
-      return false;
-    }
-
-    return true;
+  if (!user) {
+    window.location.href = "admin.html";
+    return false;
   }
+
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !profile || profile.role !== "admin") {
+    await supabaseClient.auth.signOut();
+    window.location.href = "admin.html";
+    return false;
+  }
+
+  return true;
+}
 
   async function loadRegistrations() {
       const status = document.getElementById("status");
