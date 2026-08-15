@@ -65,7 +65,19 @@
   <script src="supabase_client.js"></script>
 
   <script>
-    async function loadRegistrations() {
+   <script>
+  async function checkAdmin() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+      window.location.href = "admin.html";
+      return false;
+    }
+
+    return true;
+  }
+
+  async function loadRegistrations() {
       const status = document.getElementById("status");
       const tbody = document.querySelector("#registrationsTable tbody");
 
@@ -100,7 +112,11 @@
       });
     }
 
+    lcheckAdmin().then(isAdmin => {
+  if (isAdmin) {
     loadRegistrations();
+  }
+});
   </script>
 
 </body>
