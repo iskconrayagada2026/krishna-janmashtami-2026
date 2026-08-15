@@ -117,13 +117,14 @@
 
     try {
       const registrationId = await createRegistration({
-        name: document.getElementById("name").value.trim(),
-        className: document.getElementById("className").value.trim(),
-        institution: document.getElementById("institution").value.trim(),
-        contact: document.getElementById("contact").value.trim(),
-        event: document.getElementById("event").value
-      });
-      success.textContent = "Registration submitted. Your Registration ID is " + registrationId + ". Please keep it safe.";
+  name: document.getElementById("name").value.trim(),
+  className: document.getElementById("className").value.trim(),
+  institution: document.getElementById("institution").value.trim(),
+  contact: document.getElementById("contact").value.trim(),
+  email: document.getElementById("email").value.trim(),
+  event: document.getElementById("event").value
+});
+     success.textContent = "Registration received — your registration is complete. Your payment will be verified by the Event Coordinator, ISKCON Rayagada. Your Registration ID is " + registrationId + ". Please keep it safe.";
       success.style.display = "block";
       form.reset();
     } catch (err) {
