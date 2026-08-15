@@ -65,7 +65,6 @@
   <script src="supabase_client.js"></script>
 
   <script>
-   <script>
   async function checkAdmin() {
     const { data: { user } } = await supabaseClient.auth.getUser();
 
@@ -112,7 +111,7 @@
       });
     }
 
-    lcheckAdmin().then(isAdmin => {
+    checkAdmin().then(isAdmin => {
   if (isAdmin) {
     loadRegistrations();
   }
