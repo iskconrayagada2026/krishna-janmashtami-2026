@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Krishna Janmashtami Cultural Contest 2026</title>
+  <link rel="icon" href="rayagada-logo.png">
+  <style>
+    *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff8ee;color:#27150d}
+    header{padding:34px 18px;text-align:center;background:linear-gradient(135deg,#7a1f16,#d86b1f);color:white}
+    header img{width:82px;height:82px;object-fit:contain;background:white;border-radius:50%;padding:7px}
+    h1{margin:14px 0 6px;font-size:clamp(26px,5vw,42px)}.sub{margin:0;font-size:16px}
+    main{max-width:1050px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .card{background:white;border-radius:18px;padding:22px;box-shadow:0 8px 30px #00000012}
+    .info{background:#fff1dc}.amount{font-size:28px;font-weight:800;color:#a83218}
+    label{display:block;font-weight:700;margin:13px 0 6px}input,select{width:100%;padding:12px;border:1px solid #d9c9bc;border-radius:10px;font-size:16px}
+    button{width:100%;padding:13px;border:0;border-radius:10px;background:#a83218;color:white;font-weight:800;font-size:16px;cursor:pointer;margin-top:16px}
+    button:disabled{opacity:.6;cursor:not-allowed}.upi{padding:14px;border:1px dashed #c58a62;border-radius:12px;background:#fffaf5;margin:14px 0}
+    .qr{display:flex;justify-content:center;margin:12px 0}.small{font-size:13px;color:#6e5a4f}.success{display:none;padding:14px;border-radius:10px;background:#e9f7e9;color:#185c24;margin-top:14px}
+    .error{display:none;padding:14px;border-radius:10px;background:#fff0f0;color:#8b1a1a;margin-top:14px}
+    footer{text-align:center;padding:25px;color:#725e50}.deadline{font-weight:800;color:#9d2b13}
+    @media(max-width:760px){main{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <img src="rayagada-logo.png" alt="ISKCON Rayagada logo">
+  <h1>Krishna Janmashtami Cultural Contest 2026</h1>
+  <p class="sub">03 & 04 September 2026 • Registration ₹40</p>
+  <p class="sub">Organizer: ISKCON Rayagada<br>Event Coordinator: HG Sachinandan Kirtan Das</p>
+</header>
+
+<main>
+  <section class="card info">
+    <h2>Event Information</h2>
+    <p><strong>Date:</strong> 03 & 04 September 2026</p>
+    <p><strong>Registration deadline:</strong> <span class="deadline">30 August 2026</span></p>
+    <p><strong>Venue:</strong> ISKCON Rayagada, Indira Nagar 5th Lane, 765001, Near UP School, Rayagada</p>
+    <h3>Competitions</h3>
+    <ul>
+      <li>Krishna Vesa Competition</li>
+      <li>Bhagavad Gita Shloka Recitation</li>
+      <li>Krishna Song / Bhajan Singing</li>
+      <li>Dance Event on Krishna's Song</li>
+      <li>Krishna Drawing Competition</li>
+    </ul>
+    <h3>Contact</h3>
+    <p>📞 <strong>6297209829</strong><br>💬 WhatsApp: <strong>6297209829</strong><br>✉️ <strong>purposexyz3@gmail.com</strong></p>
+  </section>
+
+  <section class="card">
+    <h2>Participant Registration</h2>
+    <form id="registrationForm">
+      <label for="name">Participant name</label>
+      <input id="name" required maxlength="100">
+
+      <label for="className">Class / age group</label>
+      <input id="className" required maxlength="50">
+
+      <label for="institution">School / institution</label>
+      <input id="institution" required maxlength="150">
+
+      <label for="contact">10-digit mobile number</label>
+      <input id="contact" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required>
+
+      <label for="event">Competition</label>
+      <select id="event" required>
+        <option value="">Select competition</option>
+        <option>Krishna Vesa Competition</option>
+        <option>Bhagavad Gita Shloka Recitation</option>
+        <option>Krishna Song / Bhajan Singing</option>
+        <option>Dance Event on Krishna's Song</option>
+        <option>Krishna Drawing Competition</option>
+      </select>
+
+      <div class="upi">
+        <strong>Registration fee: ₹40</strong>
+        <p>Pay ₹40 by UPI to <strong>9437460784@ybl</strong>.</p>
+        <div class="qr" id="qrcode"></div>
+        <a id="payLink" href="#" target="_blank" rel="noopener">
+          <button type="button">Pay ₹40 by UPI</button>
+        </a>
+        <p class="small">After payment, submit this registration. An admin will verify the payment and mark the registration PAID.</p>
+      </div>
+
+      <button id="submitBtn" type="submit">Submit Registration</button>
+      <div class="success" id="success"></div>
+      <div class="error" id="error"></div>
+    </form>
+  </section>
+</main>
+
+<footer>ISKCON Rayagada • Krishna Janmashtami 2026</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="config.js"></script>
+<script src="supabase_client.js"></script>
+<script>
+  const upi = "upi://pay?pa=" + encodeURIComponent(EVENT_CONFIG.upiId)
+    + "&pn=" + encodeURIComponent("ISKCON Rayagada")
+    + "&am=" + EVENT_CONFIG.amount + "&cu=INR";
+  document.getElementById("payLink").href = upi;
+  new QRCode(document.getElementById("qrcode"), {text:upi,width:170,height:170});
+
+  const form = document.getElementById("registrationForm");
+  const success = document.getElementById("success");
+  const error = document.getElementById("error");
+  const btn = document.getElementById("submitBtn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    success.style.display = "none"; error.style.display = "none";
+    btn.disabled = true; btn.textContent = "Submitting...";
+
+    try {
+      const registrationId = await createRegistration({
+        name: document.getElementById("name").value.trim(),
+        className: document.getElementById("className").value.trim(),
+        institution: document.getElementById("institution").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        event: document.getElementById("event").value
+      });
+      success.textContent = "Registration submitted. Your Registration ID is " + registrationId + ". Please keep it safe.";
+      success.style.display = "block";
+      form.reset();
+    } catch (err) {
+      error.textContent = err.message || "Registration failed. Please try again.";
+      error.style.display = "block";
+    } finally {
+      btn.disabled = false; btn.textContent = "Submit Registration";
+    }
+  });
+</script>
+</body>
+</html>
