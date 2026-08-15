@@ -1,7 +1,7 @@
 // Replace these placeholders with your Supabase project's public URL and anon key.
 // Never put the service_role key here.
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "YOUR_https://ymgesjwqbjxrbbuqkzum.supabase.co_PROJECT_URL";
+const SUPABASE_ANON_KEY = "YOUR_sb_publishable_5yYmeug74cM3G8GiIkIh5A_PKIKjgpR_ANON_KEY";
 
 // Load the official Supabase browser library in your HTML before this file.
 // Example:
