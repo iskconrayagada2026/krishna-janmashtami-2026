@@ -20,6 +20,7 @@ async function createRegistration(data) {
       class_name: data.className,
       institution: data.institution,
       contact_number: data.contact,
+      email: data.email,
       event_name: data.event,
       amount: 40,
       payment_status: "PENDING"
