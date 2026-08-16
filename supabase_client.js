@@ -1,14 +1,13 @@
 // Replace these placeholders with your Supabase project's public URL and anon key.
 // Never put the service_role key here.
+
 const SUPABASE_URL = "https://ymgesjwqbjxrbbuqkzum.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_5yYmeug74cM3G8GiIkIh5A_PKIKjgpR";
 
-// Load the official Supabase browser library in your HTML before this file.
-// Example:
-// <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-// <script src="supabase_client.js"></script>
-
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
 window.createRegistration = async function createRegistration(data) {
   const registrationId =
@@ -31,5 +30,4 @@ window.createRegistration = async function createRegistration(data) {
   if (error) throw error;
 
   return registrationId;
-}
-}
+};
