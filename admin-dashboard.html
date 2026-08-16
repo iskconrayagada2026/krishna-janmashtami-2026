@@ -16,6 +16,9 @@
     .card .value { font-size: 28px; font-weight: bold; margin-top: 5px; }
     .toolbar { background: white; padding: 14px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .toolbar input, .toolbar select { padding: 9px 10px; border: 1px solid #ccc; border-radius: 6px; min-width: 180px; }
+    .clear-btn { background: #eee; color: #333; }
+    .result-note { color: #666; font-size: 14px; margin: 8px 0 0; }
+    .empty-state { padding: 20px; text-align: center; color: #666; }
     .exports { background: white; padding: 14px; border-radius: 10px; margin-bottom: 15px; }
     .competition-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #eee; }
     .competition-row:last-child { border-bottom: 0; }
@@ -47,7 +50,7 @@
   </div>
 
   <div class="toolbar">
-    <input id="searchInput" type="search" placeholder="Search ID, name, phone, email...">
+    <input id="searchInput" type="search" placeholder="Search ID, name, phone, email, institution..." autocomplete="off">
     <select id="statusFilter">
       <option value="">All payment statuses</option>
       <option value="PENDING">PENDING</option>
@@ -55,6 +58,11 @@
       <option value="REJECTED">REJECTED</option>
     </select>
     <select id="competitionFilter"><option value="">All competitions</option></select>
+    <select id="dateFilter">
+      <option value="">All dates</option>
+      <option value="TODAY">Today</option>
+    </select>
+    <button class="clear-btn" onclick="clearFilters()">Clear Filters</button>
     <button class="excel-btn" onclick="downloadCurrentView()">Download Current View</button>
     <button class="print-btn" onclick="window.print()">Print</button>
   </div>
@@ -65,6 +73,7 @@
   </div>
 
   <p id="status">Loading registrations...</p>
+  <p class="result-note">Search works across registration ID, participant name, phone, email, institution, competition and class.</p>
 
   <div class="table-wrap">
   <table id="registrationsTable">
@@ -139,15 +148,25 @@
       const search = document.getElementById("searchInput").value.trim().toLowerCase();
       const payment = document.getElementById("statusFilter").value;
       const competition = document.getElementById("competitionFilter").value;
+      const dateFilter = document.getElementById("dateFilter").value;
 
       return allRegistrations.filter(row => {
         const haystack = [
           row.registration_id, row.participant_name, row.contact_number,
           row.email, row.institution, row.event_name, row.class_name
-        ].join(" ").toLowerCase();
+        ].map(v => String(v ?? "").toLowerCase()).join(" ");
+        const rowStatus = String(row.payment_status ?? "").toUpperCase();
+        const rowCompetition = String(row.event_name ?? "");
+        const createdDate = row.created_at ? new Date(row.created_at) : null;
+        const today = new Date();
+        const isToday = createdDate && createdDate.getFullYear() === today.getFullYear()
+          && createdDate.getMonth() === today.getMonth()
+          && createdDate.getDate() === today.getDate();
+
         return (!search || haystack.includes(search))
-          && (!payment || row.payment_status === payment)
-          && (!competition || (row.event_name || "") === competition);
+          && (!payment || rowStatus === payment)
+          && (!competition || rowCompetition === competition)
+          && (!dateFilter || (dateFilter === "TODAY" && isToday));
       });
     }
 
@@ -162,8 +181,10 @@
     function populateCompetitionFilters() {
       const competitions = [...new Set(allRegistrations.map(r => r.event_name).filter(Boolean))].sort();
       const select = document.getElementById("competitionFilter");
+      const currentCompetition = select.value;
       select.innerHTML = '<option value="">All competitions</option>' +
         competitions.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+      if (competitions.includes(currentCompetition)) select.value = currentCompetition;
 
       const box = document.getElementById("competitionExports");
       box.innerHTML = competitions.length ? competitions.map(c => `
@@ -209,6 +230,11 @@
       const rows = filteredRegistrations();
       tbody.innerHTML = "";
       document.getElementById("status").textContent = `${rows.length} registration(s) shown of ${allRegistrations.length}.`;
+
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No registrations match the current search and filters.</td></tr>';
+        return;
+      }
 
       rows.forEach(row => {
         const tr = document.createElement("tr");
@@ -328,10 +354,19 @@
     );
   }
 }
+    function clearFilters() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("statusFilter").value = "";
+      document.getElementById("competitionFilter").value = "";
+      document.getElementById("dateFilter").value = "";
+      renderTable();
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("searchInput").addEventListener("input", renderTable);
       document.getElementById("statusFilter").addEventListener("change", renderTable);
       document.getElementById("competitionFilter").addEventListener("change", renderTable);
+      document.getElementById("dateFilter").addEventListener("change", renderTable);
       loadRegistrations();
     });
 
