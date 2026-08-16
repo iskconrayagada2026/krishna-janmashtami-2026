@@ -4,526 +4,345 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Dashboard</title>
-
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 24px; background: #f5f5f5; color: #222; }
-    h1 { color: #7a1616; margin-bottom: 6px; }
-    .subtitle { margin-top: 0; color: #666; }
-    #status { margin: 15px 0; font-weight: bold; }
-    .cards { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 12px; margin: 18px 0; }
-    .card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 1px 5px rgba(0,0,0,.08); }
-    .card .label { color: #666; font-size: 14px; }
-    .card .value { font-size: 28px; font-weight: bold; margin-top: 5px; }
-    .toolbar { background: white; padding: 14px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .toolbar input, .toolbar select { padding: 9px 10px; border: 1px solid #ccc; border-radius: 6px; min-width: 180px; }
-    .clear-btn { background: #eee; color: #333; }
-    .result-note { color: #666; font-size: 14px; margin: 8px 0 0; }
-    .empty-state { padding: 20px; text-align: center; color: #666; }
-    .exports { background: white; padding: 14px; border-radius: 10px; margin-bottom: 15px; }
-    .competition-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #eee; }
-    .competition-row:last-child { border-bottom: 0; }
-    button { padding: 8px 12px; margin: 2px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-    .paid-btn { background: #198754; color: white; }
-    .reject-btn { background: #dc3545; color: white; }
-    .excel-btn { background: #217346; color: white; }
-    .print-btn { background: #555; color: white; }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .table-wrap { overflow-x: auto; background: white; border-radius: 8px; }
-    table { width: 100%; border-collapse: collapse; background: white; }
-    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; white-space: nowrap; }
-    th { background: #7a1616; color: white; }
-    @media (max-width: 800px) { .cards { grid-template-columns: repeat(2, 1fr); } body { padding: 12px; } }
-    @media (max-width: 480px) { .toolbar input, .toolbar select { min-width: 100%; } }
-  
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.55);
-      z-index: 1000;
-      padding: 20px;
-      box-sizing: border-box;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: Arial, sans-serif; background: #f5f6f8; color: #222;
     }
-    .modal {
-      background: white;
-      max-width: 700px;
-      margin: 5vh auto;
-      border-radius: 12px;
-      padding: 22px;
-      max-height: 85vh;
-      overflow-y: auto;
-      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+    .page { max-width: 1500px; margin: auto; padding: 22px; }
+    h1 { margin: 0 0 4px; color: #7a1616; }
+    .sub { color: #666; margin: 0 0 20px; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+    .card { background:#fff; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,.07); }
+    .label { color:#666; font-size:14px; }
+    .number { font-size:30px; font-weight:700; margin-top:6px; }
+    .panel { background:#fff; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+    .toolbar { display:flex; gap:9px; flex-wrap:wrap; }
+    input, select { padding:10px 11px; border:1px solid #ccc; border-radius:7px; min-width:180px; }
+    button { border:0; border-radius:7px; padding:9px 12px; font-weight:700; cursor:pointer; }
+    button:disabled { opacity:.55; cursor:not-allowed; }
+    .green { background:#198754; color:#fff; }
+    .red { background:#dc3545; color:#fff; }
+    .blue { background:#0d6efd; color:#fff; }
+    .purple { background:#6f42c1; color:#fff; }
+    .dark { background:#555; color:#fff; }
+    .excel { background:#217346; color:#fff; }
+    .muted { color:#666; }
+    .competition-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #eee; }
+    .competition-row:last-child { border-bottom:0; }
+    .table-wrap { overflow:auto; border-radius:9px; }
+    table { width:100%; border-collapse:collapse; min-width:1050px; }
+    th,td { padding:10px; border:1px solid #ddd; text-align:left; white-space:nowrap; }
+    th { background:#7a1616; color:#fff; }
+    .status-message { margin:12px 0; font-weight:700; }
+    .error { color:#b00020; background:#fff0f0; padding:12px; border-radius:8px; }
+    .modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:999; padding:18px; }
+    .modal { background:#fff; max-width:760px; max-height:90vh; overflow:auto; margin:4vh auto; border-radius:12px; padding:20px; }
+    .modal-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .modal-head h2 { margin:0; color:#7a1616; }
+    .details { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }
+    .detail { background:#f6f6f6; border-radius:7px; padding:11px; overflow-wrap:anywhere; }
+    .detail strong { display:block; color:#666; font-size:12px; margin-bottom:4px; }
+    @media(max-width:800px) { .cards{grid-template-columns:1fr 1fr;} .details{grid-template-columns:1fr;} .page{padding:12px;} }
+    @media(max-width:480px) { .cards{grid-template-columns:1fr;} input,select{width:100%; min-width:0;} }
+    @media print {
+      .no-print, .modal-backdrop { display:none !important; }
+      body { background:#fff; } .page{max-width:none;}
     }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .modal-header h2 { margin: 0; color: #7a1616; }
-    .close-btn { background: #777; color: white; }
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .detail-item {
-      background: #f7f7f7;
-      border-radius: 7px;
-      padding: 10px;
-    }
-    .detail-item strong { display: block; color: #666; font-size: 12px; margin-bottom: 4px; }
-    .view-btn { background: #0d6efd; color: white; }
-    .resend-btn { background: #6f42c1; color: white; }
-    @media (max-width: 600px) {
-      .detail-grid { grid-template-columns: 1fr; }
-    }
-
+  </style>
 </head>
-
 <body>
-
+<div class="page">
   <h1>Admin Dashboard</h1>
-  <p class="subtitle">Registration, payment and competition management</p>
+  <p class="sub">Registration, payment and competition management</p>
+
+  <div id="startupError" class="error no-print" style="display:none"></div>
 
   <div class="cards">
-    <div class="card"><div class="label">Total Registrations</div><div class="value" id="totalCount">0</div></div>
-    <div class="card"><div class="label">Pending</div><div class="value" id="pendingCount">0</div></div>
-    <div class="card"><div class="label">Paid</div><div class="value" id="paidCount">0</div></div>
-    <div class="card"><div class="label">Today</div><div class="value" id="todayCount">0</div></div>
+    <div class="card"><div class="label">Total Registrations</div><div class="number" id="totalCount">0</div></div>
+    <div class="card"><div class="label">Pending</div><div class="number" id="pendingCount">0</div></div>
+    <div class="card"><div class="label">Paid</div><div class="number" id="paidCount">0</div></div>
+    <div class="card"><div class="label">Today's Registrations</div><div class="number" id="todayCount">0</div></div>
   </div>
 
-  <div class="toolbar">
-    <input id="searchInput" type="search" placeholder="Search ID, name, phone, email, institution..." autocomplete="off">
-    <select id="statusFilter">
-      <option value="">All payment statuses</option>
-      <option value="PENDING">PENDING</option>
-      <option value="PAID">PAID</option>
-      <option value="REJECTED">REJECTED</option>
-    </select>
-    <select id="competitionFilter"><option value="">All competitions</option></select>
-    <select id="dateFilter">
-      <option value="">All dates</option>
-      <option value="TODAY">Today</option>
-    </select>
-    <button class="clear-btn" onclick="clearFilters()">Clear Filters</button>
-    <button class="excel-btn" onclick="downloadCurrentView()">Download Current View</button>
-    <button class="print-btn" onclick="window.print()">Print</button>
-  </div>
-
-  <div class="exports">
-    <h2>Competition-wise Excel</h2>
-    <div id="competitionExports">Loading competitions...</div>
-  </div>
-
-  <p id="status">Loading registrations...</p>
-  <p class="result-note">Search works across registration ID, participant name, phone, email, institution, competition and class.</p>
-
-  <div class="table-wrap">
-  <table id="registrationsTable">
-    <thead>
-      <tr>
-        <th>Registration ID</th>
-        <th>Name</th>
-        <th>Class</th>
-        <th>Institution</th>
-        <th>Contact</th>
-        <th>Event</th>
-        <th>Amount</th>
-        <th>Payment Status</th>
-        <th>Admin Actions</th>
-      </tr>
-    </thead>
-
-    <tbody></tbody>
-  </table>
-  </div>
-
-
-  <div id="detailsModal" class="modal-backdrop" onclick="if(event.target===this) closeDetails()">
-    <div class="modal">
-      <div class="modal-header">
-        <h2>Registration Details</h2>
-        <button class="close-btn" onclick="closeDetails()">Close</button>
-      </div>
-      <div id="detailsContent"></div>
-      <div style="margin-top:16px">
-        <button id="modalResendBtn" class="resend-btn">📧 Resend Email</button>
-      </div>
+  <div class="panel no-print">
+    <div class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search ID, name, phone, email...">
+      <select id="statusFilter">
+        <option value="">All payment statuses</option>
+        <option value="PENDING">PENDING</option>
+        <option value="PAID">PAID</option>
+        <option value="REJECTED">REJECTED</option>
+      </select>
+      <select id="competitionFilter"><option value="">All competitions</option></select>
+      <select id="dateFilter">
+        <option value="">All dates</option>
+        <option value="today">Today</option>
+      </select>
+      <button class="dark" onclick="clearFilters()">Clear Filters</button>
+      <button class="excel" onclick="downloadCurrentView()">Download Current View</button>
+      <button class="dark" onclick="window.print()">Print</button>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script src="supabase_client.js"></script>
-  <script src="admin_auth.js"></script>
+  <div class="panel no-print">
+    <h2>Competition-wise Excel</h2>
+    <div id="competitionExports" class="muted">Loading competitions...</div>
+  </div>
 
-  <script>
+  <div id="status" class="status-message">Loading registrations...</div>
 
-    async function checkAdmin() {
+  <div class="panel">
+    <div class="table-wrap">
+      <table id="registrationsTable">
+        <thead>
+          <tr>
+            <th>Registration ID</th><th>Name</th><th>Class</th><th>Institution</th>
+            <th>Contact</th><th>Event</th><th>Amount</th><th>Payment Status</th><th class="no-print">Admin Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-      const {
-        data: { user }
-      } = await supabaseClient.auth.getUser();
+<div id="detailsModal" class="modal-backdrop no-print">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Registration Details</h2>
+      <button class="dark" onclick="closeDetails()">Close</button>
+    </div>
+    <div id="detailsContent" class="details"></div>
+    <div style="margin-top:16px">
+      <button id="modalResendBtn" class="purple">📧 Resend Email</button>
+    </div>
+  </div>
+</div>
 
-      if (!user) {
-        window.location.href = "admin.html";
-        return false;
-      }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase_client.js"></script>
+<script src="admin_auth.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-      const { data: profile, error } = await supabaseClient
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
+<script>
+"use strict";
 
-      if (error || !profile || profile.role !== "admin") {
+let allRegistrations = [];
 
-        await supabaseClient.auth.signOut();
-
-        window.location.href = "admin.html";
-
-        return false;
-      }
-
-      return true;
-    }
-
-
-
-    let allRegistrations = [];
-
-    function escapeHtml(value) {
-      return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-
-    function escapeJs(value) {
-      return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-    }
-
-    function filteredRegistrations() {
-      const search = document.getElementById("searchInput").value.trim().toLowerCase();
-      const payment = document.getElementById("statusFilter").value;
-      const competition = document.getElementById("competitionFilter").value;
-      const dateFilter = document.getElementById("dateFilter").value;
-
-      return allRegistrations.filter(row => {
-        const haystack = [
-          row.registration_id, row.participant_name, row.contact_number,
-          row.email, row.institution, row.event_name, row.class_name
-        ].map(v => String(v ?? "").toLowerCase()).join(" ");
-        const rowStatus = String(row.payment_status ?? "").toUpperCase();
-        const rowCompetition = String(row.event_name ?? "");
-        const createdDate = row.created_at ? new Date(row.created_at) : null;
-        const today = new Date();
-        const isToday = createdDate && createdDate.getFullYear() === today.getFullYear()
-          && createdDate.getMonth() === today.getMonth()
-          && createdDate.getDate() === today.getDate();
-
-        return (!search || haystack.includes(search))
-          && (!payment || rowStatus === payment)
-          && (!competition || rowCompetition === competition)
-          && (!dateFilter || (dateFilter === "TODAY" && isToday));
-      });
-    }
-
-    function updateDashboardCards() {
-      const today = new Date().toISOString().slice(0, 10);
-      document.getElementById("totalCount").textContent = allRegistrations.length;
-      document.getElementById("pendingCount").textContent = allRegistrations.filter(r => r.payment_status === "PENDING").length;
-      document.getElementById("paidCount").textContent = allRegistrations.filter(r => r.payment_status === "PAID").length;
-      document.getElementById("todayCount").textContent = allRegistrations.filter(r => (r.created_at || "").slice(0, 10) === today).length;
-    }
-
-    function populateCompetitionFilters() {
-      const competitions = [...new Set(allRegistrations.map(r => r.event_name).filter(Boolean))].sort();
-      const select = document.getElementById("competitionFilter");
-      const currentCompetition = select.value;
-      select.innerHTML = '<option value="">All competitions</option>' +
-        competitions.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
-      if (competitions.includes(currentCompetition)) select.value = currentCompetition;
-
-      const box = document.getElementById("competitionExports");
-      box.innerHTML = competitions.length ? competitions.map(c => `
-        <div class="competition-row">
-          <strong>${escapeHtml(c)}</strong>
-          <button class="excel-btn" onclick="downloadCompetition('${escapeJs(c)}')">Download Excel</button>
-        </div>
-      `).join("") : "No competitions found.";
-    }
-
-    function exportRows(rows, filename) {
-      if (!rows.length) { alert("No registrations found for this export."); return; }
-      const exportData = rows.map(row => ({
-        "Registration ID": row.registration_id ?? "",
-        "Participant Name": row.participant_name ?? "",
-        "Class": row.class_name ?? "",
-        "Institution": row.institution ?? "",
-        "Contact Number": row.contact_number ?? "",
-        "Email": row.email ?? "",
-        "Competition": row.event_name ?? "",
-        "Amount": row.amount ?? "",
-        "Payment Status": row.payment_status ?? "",
-        "Registration Date": row.created_at ? new Date(row.created_at).toLocaleString("en-IN") : ""
-      }));
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Registrations");
-      XLSX.writeFile(workbook, filename);
-    }
-
-    function downloadCompetition(competition) {
-      const rows = allRegistrations.filter(r => (r.event_name || "") === competition);
-      const safeName = competition.replace(/[^a-z0-9]+/gi, "_").replace(/^_|_$/g, "");
-      exportRows(rows, `${safeName || "competition"}_registrations.xlsx`);
-    }
-
-    function downloadCurrentView() {
-      exportRows(filteredRegistrations(), "registrations_current_view.xlsx");
-    }
-
-
-    function valueOrDash(value) {
-      return value === null || value === undefined || value === "" ? "—" : value;
-    }
-
-    function showDetails(registrationId) {
-      const row = allRegistrations.find(r => String(r.registration_id) === String(registrationId));
-      if (!row) {
-        alert("Registration not found.");
-        return;
-      }
-
-      const preferredOrder = [
-        "registration_id", "participant_name", "class_name", "institution",
-        "contact_number", "email", "event_name", "amount", "payment_status", "created_at"
-      ];
-
-      const labels = {
-        registration_id: "Registration ID",
-        participant_name: "Participant Name",
-        class_name: "Class",
-        institution: "Institution",
-        contact_number: "Contact Number",
-        email: "Email",
-        event_name: "Competition",
-        amount: "Amount",
-        payment_status: "Payment Status",
-        created_at: "Registration Date"
-      };
-
-      const keys = [...preferredOrder, ...Object.keys(row).filter(k => !preferredOrder.includes(k))];
-
-      document.getElementById("detailsContent").innerHTML = `
-        <div class="detail-grid">
-          ${keys.map(key => {
-            let value = valueOrDash(row[key]);
-            if (key === "amount" && value !== "—") value = "₹" + value;
-            if (key === "created_at" && value !== "—") value = new Date(value).toLocaleString("en-IN");
-            return `<div class="detail-item"><strong>${escapeHtml(labels[key] || key.replace(/_/g, " "))}</strong>${escapeHtml(value)}</div>`;
-          }).join("")}
-        </div>
-      `;
-
-      const resendBtn = document.getElementById("modalResendBtn");
-      resendBtn.onclick = () => resendRegistrationEmail(registrationId);
-      resendBtn.disabled = !row.email;
-
-      document.getElementById("detailsModal").style.display = "block";
-    }
-
-    function closeDetails() {
-      document.getElementById("detailsModal").style.display = "none";
-    }
-
-    async function resendRegistrationEmail(registrationId) {
-      const row = allRegistrations.find(r => String(r.registration_id) === String(registrationId));
-      if (!row || !row.email) {
-        alert("No email address is available for this registration.");
-        return;
-      }
-
-      if (!confirm(`Resend the payment/registration email to ${row.email}?`)) return;
-
-      const btn = document.getElementById("modalResendBtn");
-      btn.disabled = true;
-      btn.textContent = "Sending...";
-
-      try {
-        const { data: emailResult, error: sendError } =
-          await supabaseClient.functions.invoke("send-payment-email", {
-            body: {
-              email: row.email,
-              registration_id: row.registration_id
-            }
-          });
-
-        if (sendError) throw sendError;
-
-        console.log("Email resend result:", emailResult);
-        alert("Email sent successfully.");
-      } catch (error) {
-        console.error("Email resend error:", error);
-        alert("Could not send the email: " + (error.message || "Unknown error"));
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "📧 Resend Email";
-      }
-    }
-
-    function renderTable() {
-      const tbody = document.querySelector("#registrationsTable tbody");
-      const rows = filteredRegistrations();
-      tbody.innerHTML = "";
-      document.getElementById("status").textContent = `${rows.length} registration(s) shown of ${allRegistrations.length}.`;
-
-      if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No registrations match the current search and filters.</td></tr>';
-        return;
-      }
-
-      rows.forEach(row => {
-        const tr = document.createElement("tr");
-        let paymentHTML = row.payment_status === "PENDING"
-          ? `<button class="paid-btn" onclick="changePaymentStatus('${escapeJs(row.registration_id)}', 'PAID')">Mark PAID</button>
-             <button class="reject-btn" onclick="changePaymentStatus('${escapeJs(row.registration_id)}', 'REJECTED')">Reject</button>`
-          : `<strong>${escapeHtml(row.payment_status)}</strong>`;
-
-        let actionHTML = `
-          <button class="view-btn" onclick="showDetails('${escapeJs(row.registration_id)}')">View Details</button>
-          <button class="resend-btn" onclick="resendRegistrationEmail('${escapeJs(row.registration_id)}')">📧 Resend Email</button>
-        `;
-
-        tr.innerHTML = `
-          <td>${escapeHtml(row.registration_id)}</td>
-          <td>${escapeHtml(row.participant_name)}</td>
-          <td>${escapeHtml(row.class_name)}</td>
-          <td>${escapeHtml(row.institution)}</td>
-          <td>${escapeHtml(row.contact_number)}</td>
-          <td>${escapeHtml(row.event_name)}</td>
-          <td>₹${escapeHtml(row.amount)}</td>
-          <td>${paymentHTML}</td>
-          <td>${actionHTML}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
-
-    async function loadRegistrations() {
-
-      const status = document.getElementById("status");
-      const tbody = document.querySelector("#registrationsTable tbody");
-
-      const { data, error } = await supabaseClient
-        .from("registrations")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error(error);
-        status.textContent = "Could not load registrations.";
-        return;
-      }
-
-      allRegistrations = data || [];
-      updateDashboardCards();
-      populateCompetitionFilters();
-      renderTable();
-    }
-
-    async function changePaymentStatus(registrationId, newStatus) {
-  const message =
-    newStatus === "PAID"
-      ? "Mark this registration as PAID?"
-      : "Reject this registration?";
-
-  if (!confirm(message)) {
+function esc(value) {
+  return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+function jsEsc(value) {
+  return String(value ?? "").replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+}
+function todayString() {
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function setError(message) {
+  const box = document.getElementById("startupError");
+  box.textContent = message;
+  box.style.display = "block";
+}
+function filteredRows() {
+  const q = document.getElementById("searchInput").value.trim().toLowerCase();
+  const status = document.getElementById("statusFilter").value;
+  const competition = document.getElementById("competitionFilter").value;
+  const date = document.getElementById("dateFilter").value;
+  return allRegistrations.filter(r => {
+    const text = [
+      r.registration_id,r.participant_name,r.contact_number,r.email,
+      r.institution,r.event_name,r.class_name
+    ].join(" ").toLowerCase();
+    const created = r.created_at ? new Date(r.created_at) : null;
+    const isToday = created && !Number.isNaN(created.getTime())
+      ? created.toISOString().slice(0,10) === todayString() : false;
+    return (!q || text.includes(q)) &&
+      (!status || String(r.payment_status || "") === status) &&
+      (!competition || String(r.event_name || "") === competition) &&
+      (!date || (date === "today" && isToday));
+  });
+}
+function updateCards() {
+  document.getElementById("totalCount").textContent = allRegistrations.length;
+  document.getElementById("pendingCount").textContent = allRegistrations.filter(r => r.payment_status === "PENDING").length;
+  document.getElementById("paidCount").textContent = allRegistrations.filter(r => r.payment_status === "PAID").length;
+  document.getElementById("todayCount").textContent = allRegistrations.filter(r => {
+    if (!r.created_at) return false;
+    const d = new Date(r.created_at);
+    return !Number.isNaN(d.getTime()) && d.toISOString().slice(0,10) === todayString();
+  }).length;
+}
+function populateCompetitions() {
+  const competitions = [...new Set(allRegistrations.map(r => r.event_name).filter(Boolean))].sort();
+  document.getElementById("competitionFilter").innerHTML =
+    '<option value="">All competitions</option>' +
+    competitions.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  const box = document.getElementById("competitionExports");
+  if (!competitions.length) {
+    box.textContent = "No competitions yet. They will appear here after the first registration.";
     return;
   }
+  box.innerHTML = competitions.map(c => `
+    <div class="competition-row">
+      <strong>${esc(c)}</strong>
+      <button class="excel" onclick="downloadCompetition('${jsEsc(c)}')">📥 Download Excel</button>
+    </div>
+  `).join("");
+}
+function renderTable() {
+  const rows = filteredRows();
+  const tbody = document.querySelector("#registrationsTable tbody");
+  tbody.innerHTML = "";
+  document.getElementById("status").textContent =
+    `${rows.length} registration(s) shown of ${allRegistrations.length}.`;
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    const payment = r.payment_status === "PENDING"
+      ? `<button class="green" onclick="changePaymentStatus('${jsEsc(r.registration_id)}','PAID')">Mark PAID</button>
+         <button class="red" onclick="changePaymentStatus('${jsEsc(r.registration_id)}','REJECTED')">Reject</button>`
+      : `<strong>${esc(r.payment_status || "—")}</strong>`;
+    tr.innerHTML = `
+      <td>${esc(r.registration_id)}</td>
+      <td>${esc(r.participant_name)}</td>
+      <td>${esc(r.class_name)}</td>
+      <td>${esc(r.institution)}</td>
+      <td>${esc(r.contact_number)}</td>
+      <td>${esc(r.event_name)}</td>
+      <td>₹${esc(r.amount)}</td>
+      <td>${payment}</td>
+      <td class="no-print">
+        <button class="blue" onclick="showDetails('${jsEsc(r.registration_id)}')">View Details</button>
+        <button class="purple" onclick="resendRegistrationEmail('${jsEsc(r.registration_id)}')">📧 Resend</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+function exportRows(rows, filename) {
+  if (!rows.length) { alert("No registrations found for this export."); return; }
+  if (typeof XLSX === "undefined") { alert("Excel library did not load. Refresh the page and try again."); return; }
+  const data = rows.map(r => ({
+    "Registration ID": r.registration_id ?? "",
+    "Participant Name": r.participant_name ?? "",
+    "Class": r.class_name ?? "",
+    "Institution": r.institution ?? "",
+    "Contact Number": r.contact_number ?? "",
+    "Email": r.email ?? "",
+    "Competition": r.event_name ?? "",
+    "Amount": r.amount ?? "",
+    "Payment Status": r.payment_status ?? "",
+    "Registration Date": r.created_at ? new Date(r.created_at).toLocaleString("en-IN") : ""
+  }));
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Registrations");
+  XLSX.writeFile(wb, filename);
+}
+function downloadCompetition(c) {
+  const rows = allRegistrations.filter(r => String(r.event_name || "") === String(c));
+  const safe = String(c).replace(/[^a-z0-9]+/gi,"_").replace(/^_|_$/g,"") || "competition";
+  exportRows(rows, safe + "_registrations.xlsx");
+}
+function downloadCurrentView() {
+  exportRows(filteredRows(), "registrations_current_view.xlsx");
+}
+function clearFilters() {
+  document.getElementById("searchInput").value = "";
+  document.getElementById("statusFilter").value = "";
+  document.getElementById("competitionFilter").value = "";
+  document.getElementById("dateFilter").value = "";
+  renderTable();
+}
+function showDetails(id) {
+  const r = allRegistrations.find(x => String(x.registration_id) === String(id));
+  if (!r) { alert("Registration not found."); return; }
+  const preferred = ["registration_id","participant_name","class_name","institution","contact_number","email","event_name","amount","payment_status","created_at"];
+  const keys = [...preferred, ...Object.keys(r).filter(k => !preferred.includes(k))];
+  const labels = {
+    registration_id:"Registration ID", participant_name:"Participant Name", class_name:"Class",
+    institution:"Institution", contact_number:"Contact Number", email:"Email",
+    event_name:"Competition", amount:"Amount", payment_status:"Payment Status", created_at:"Registration Date"
+  };
+  document.getElementById("detailsContent").innerHTML = keys.map(k => {
+    let v = r[k];
+    if (v === null || v === undefined || v === "") v = "—";
+    if (k === "amount" && v !== "—") v = "₹" + v;
+    if (k === "created_at" && v !== "—") v = new Date(v).toLocaleString("en-IN");
+    return `<div class="detail"><strong>${esc(labels[k] || k.replace(/_/g," "))}</strong>${esc(v)}</div>`;
+  }).join("");
+  const b = document.getElementById("modalResendBtn");
+  b.disabled = !r.email;
+  b.onclick = () => resendRegistrationEmail(id);
+  document.getElementById("detailsModal").style.display = "block";
+}
+function closeDetails() { document.getElementById("detailsModal").style.display = "none"; }
 
+async function resendRegistrationEmail(id) {
+  const r = allRegistrations.find(x => String(x.registration_id) === String(id));
+  if (!r || !r.email) { alert("No email address is available for this registration."); return; }
+  if (!confirm("Resend the email to " + r.email + "?")) return;
+  const buttons = [...document.querySelectorAll(`button`)];
   try {
-    // 1. Update payment status
-    await verifyRegistration(
-      registrationId,
-      newStatus
-    );
-
-    // 2. If marked PAID, send verification email
-    if (newStatus === "PAID") {
-
-      // Get registration email
-      const { data: registration, error: emailError } =
-        await supabaseClient
-          .from("registrations")
-          .select("email")
-          .eq("registration_id", registrationId)
-          .single();
-
-      if (emailError) {
-        console.error("Could not get registration email:", emailError);
-      } else if (registration?.email) {
-
-        // Call Supabase Edge Function
-        const { data: emailResult, error: sendError } =
-          await supabaseClient.functions.invoke(
-            "send-payment-email",
-            {
-              body: {
-                email: registration.email,
-                registration_id: registrationId
-              }
-            }
-          );
-
-        if (sendError) {
-          console.error(
-            "Payment email error:",
-            sendError
-          );
-        } else {
-          console.log(
-            "Payment verification email sent:",
-            emailResult
-          );
-        }
-      }
-    }
-
-    alert(
-      newStatus === "PAID"
-        ? "Payment marked as PAID. Verification email sent."
-        : "Registration marked as REJECTED."
-    );
-
-    await loadRegistrations();
-
-  } catch (error) {
-    console.error(error);
-
-    alert(
-      "Could not update payment status: " +
-      error.message
-    );
+    const { data, error } = await supabaseClient.functions.invoke("send-payment-email", {
+      body: { email: r.email, registration_id: r.registration_id }
+    });
+    if (error) throw error;
+    console.log(data);
+    alert("Email sent successfully.");
+  } catch (e) {
+    console.error(e);
+    alert("Could not send the email: " + (e.message || "Unknown error"));
   }
 }
-    function clearFilters() {
-      document.getElementById("searchInput").value = "";
-      document.getElementById("statusFilter").value = "";
-      document.getElementById("competitionFilter").value = "";
-      document.getElementById("dateFilter").value = "";
-      renderTable();
+async function loadRegistrations() {
+  const status = document.getElementById("status");
+  try {
+    if (typeof supabaseClient === "undefined") throw new Error("Supabase client was not loaded.");
+    const result = await supabaseClient.from("registrations").select("*").order("created_at",{ascending:false});
+    if (result.error) throw result.error;
+    allRegistrations = result.data || [];
+    updateCards(); populateCompetitions(); renderTable();
+  } catch (e) {
+    console.error(e);
+    status.textContent = "Could not load registrations.";
+    setError("Dashboard error: " + (e.message || "Unknown error") + ". Check that supabase_client.js and admin_auth.js are in the same GitHub folder.");
+  }
+}
+async function changePaymentStatus(id, newStatus) {
+  const message = newStatus === "PAID" ? "Mark this registration as PAID?" : "Reject this registration?";
+  if (!confirm(message)) return;
+  try {
+    if (typeof verifyRegistration !== "function") throw new Error("verifyRegistration() was not found in admin_auth.js.");
+    await verifyRegistration(id, newStatus);
+    if (newStatus === "PAID") {
+      const result = await supabaseClient.from("registrations").select("email").eq("registration_id",id).single();
+      if (!result.error && result.data && result.data.email) {
+        const mail = await supabaseClient.functions.invoke("send-payment-email", {
+          body: { email: result.data.email, registration_id: id }
+        });
+        if (mail.error) console.error("Payment email error:", mail.error);
+      }
     }
+    alert(newStatus === "PAID" ? "Payment marked as PAID. Verification email sent." : "Registration marked as REJECTED.");
+    await loadRegistrations();
+  } catch(e) {
+    console.error(e);
+    alert("Could not update payment status: " + (e.message || "Unknown error"));
+  }
+}
 
-    window.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("searchInput").addEventListener("input", renderTable);
-      document.getElementById("statusFilter").addEventListener("change", renderTable);
-      document.getElementById("competitionFilter").addEventListener("change", renderTable);
-      document.getElementById("dateFilter").addEventListener("change", renderTable);
-      loadRegistrations();
-    });
-
-  </script>
-
+window.addEventListener("DOMContentLoaded", () => {
+  ["searchInput","statusFilter","competitionFilter","dateFilter"].forEach(id => {
+    document.getElementById(id).addEventListener(id === "searchInput" ? "input" : "change", renderTable);
+  });
+  loadRegistrations();
+});
+window.addEventListener("error", e => {
+  console.error(e.error || e.message);
+  if (e.message) setError("Page error: " + e.message);
+});
+</script>
 </body>
 </html>
