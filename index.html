@@ -1,42 +1,241 @@
+```html
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>Krishna Janmashtami Cultural Contest 2026</title>
+
   <link rel="icon" href="rayagada-logo.png">
+
   <style>
-    *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff8ee;color:#27150d}
-    header{padding:34px 18px;text-align:center;background:linear-gradient(135deg,#7a1f16,#d86b1f);color:white}
-    header img{width:82px;height:82px;object-fit:contain;background:white;border-radius:50%;padding:7px}
-    h1{margin:14px 0 6px;font-size:clamp(26px,5vw,42px)}.sub{margin:0;font-size:16px}
-    main{max-width:1050px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    .card{background:white;border-radius:18px;padding:22px;box-shadow:0 8px 30px #00000012}
-    .info{background:#fff1dc}.amount{font-size:28px;font-weight:800;color:#a83218}
-    label{display:block;font-weight:700;margin:13px 0 6px}input,select{width:100%;padding:12px;border:1px solid #d9c9bc;border-radius:10px;font-size:16px}
-    button{width:100%;padding:13px;border:0;border-radius:10px;background:#a83218;color:white;font-weight:800;font-size:16px;cursor:pointer;margin-top:16px}
-    button:disabled{opacity:.6;cursor:not-allowed}.upi{padding:14px;border:1px dashed #c58a62;border-radius:12px;background:#fffaf5;margin:14px 0}
-    .qr{display:flex;justify-content:center;margin:12px 0}.small{font-size:13px;color:#6e5a4f}.success{display:none;padding:14px;border-radius:10px;background:#e9f7e9;color:#185c24;margin-top:14px}
-    .error{display:none;padding:14px;border-radius:10px;background:#fff0f0;color:#8b1a1a;margin-top:14px}
-    footer{text-align:center;padding:25px;color:#725e50}.deadline{font-weight:800;color:#9d2b13}
-    @media(max-width:760px){main{grid-template-columns:1fr}}
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #fff8ee;
+      color: #27150d;
+    }
+
+    header {
+      padding: 34px 18px;
+      text-align: center;
+      background: linear-gradient(135deg, #7a1f16, #d86b1f);
+      color: white;
+    }
+
+    header img {
+      width: 82px;
+      height: 82px;
+      object-fit: contain;
+      background: white;
+      border-radius: 50%;
+      padding: 7px;
+    }
+
+    h1 {
+      margin: 14px 0 6px;
+      font-size: clamp(26px, 5vw, 42px);
+    }
+
+    .sub {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: 24px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 30px #00000012;
+    }
+
+    .info {
+      background: #fff1dc;
+    }
+
+    .amount {
+      font-size: 28px;
+      font-weight: 800;
+      color: #a83218;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 13px 0 6px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d9c9bc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 10px;
+      background: #a83218;
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .upi {
+      padding: 14px;
+      border: 1px dashed #c58a62;
+      border-radius: 12px;
+      background: #fffaf5;
+      margin: 14px 0;
+    }
+
+    .qr {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #6e5a4f;
+    }
+
+    .success {
+      display: none;
+      padding: 14px;
+      border-radius: 10px;
+      background: #e9f7e9;
+      color: #185c24;
+      margin-top: 14px;
+    }
+
+    .error {
+      display: none;
+      padding: 14px;
+      border-radius: 10px;
+      background: #fff0f0;
+      color: #8b1a1a;
+      margin-top: 14px;
+    }
+
+    .status-box {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 2px solid #ead8ca;
+    }
+
+    #statusResult {
+      margin-top: 15px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #fff8ee;
+      line-height: 1.7;
+      display: none;
+    }
+
+    #receiptBtn {
+      display: none;
+      background: #246b36;
+    }
+
+    .deadline {
+      font-weight: 800;
+      color: #9d2b13;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #725e50;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
+
 <body>
+
 <header>
-  <img src="rayagada-logo.png" alt="ISKCON Rayagada logo">
-  <h1>Krishna Janmashtami Cultural Contest 2026</h1>
-  <p class="sub">03 & 04 September 2026 • Registration ₹40</p>
-  <p class="sub">Organizer: ISKCON Rayagada<br>Event Coordinator: HG Sachinandan Kirtan Das</p>
+
+  <img
+    src="rayagada-logo.png"
+    alt="ISKCON Rayagada logo"
+  >
+
+  <h1>
+    Krishna Janmashtami Cultural Contest 2026
+  </h1>
+
+  <p class="sub">
+    03 & 04 September 2026 • Registration ₹40
+  </p>
+
+  <p class="sub">
+    Organizer: ISKCON Rayagada<br>
+    Event Coordinator: HG Sachinandan Kirtan Das
+  </p>
+
 </header>
 
+
 <main>
+
+  <!-- EVENT INFORMATION -->
+
   <section class="card info">
+
     <h2>Event Information</h2>
-    <p><strong>Date:</strong> 03 & 04 September 2026</p>
-    <p><strong>Registration deadline:</strong> <span class="deadline">30 August 2026</span></p>
-    <p><strong>Venue:</strong> ISKCON Rayagada, Indira Nagar 5th Lane, 765001, Near UP School, Rayagada</p>
+
+    <p>
+      <strong>Date:</strong>
+      03 & 04 September 2026
+    </p>
+
+    <p>
+      <strong>Registration deadline:</strong>
+      <span class="deadline">
+        30 August 2026
+      </span>
+    </p>
+
+    <p>
+      <strong>Venue:</strong>
+      ISKCON Rayagada, Indira Nagar 5th Lane,
+      765001, Near UP School, Rayagada
+    </p>
+
     <h3>Competitions</h3>
+
     <ul>
       <li>Krishna Vesa Competition</li>
       <li>Bhagavad Gita Shloka Recitation</li>
@@ -44,375 +243,877 @@
       <li>Dance Event on Krishna's Song</li>
       <li>Krishna Drawing Competition</li>
     </ul>
+
     <h3>Contact</h3>
-    <p>📞 <strong>6297209829</strong><br>💬 WhatsApp: <strong>6297209829</strong><br>✉️ <strong>purposexyz3@gmail.com</strong></p>
+
+    <p>
+      📞 <strong>6297209829</strong><br>
+      💬 WhatsApp: <strong>6297209829</strong><br>
+      ✉️ <strong>purposexyz3@gmail.com</strong>
+    </p>
+
   </section>
+
+
+  <!-- REGISTRATION -->
 
   <section class="card">
+
     <h2>Participant Registration</h2>
+
     <form id="registrationForm">
-      <label for="name">Participant name</label>
-      <input id="name" required maxlength="100">
 
-      <label for="className">Class / age group</label>
-      <input id="className" required maxlength="50">
+      <label for="name">
+        Participant name
+      </label>
 
-      <label for="institution">School / institution</label>
-      <input id="institution" required maxlength="150">
+      <input
+        id="name"
+        required
+        maxlength="100"
+      >
 
-      <label for="contact">10-digit mobile number</label>
-      <input id="contact" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required>
-      <label for="email">Email</label>
-<input id="email" type="email" placeholder="example@gmail.com" required>
 
-      <label for="event">Competition</label>
+      <label for="className">
+        Class / age group
+      </label>
+
+      <input
+        id="className"
+        required
+        maxlength="50"
+      >
+
+
+      <label for="institution">
+        School / institution
+      </label>
+
+      <input
+        id="institution"
+        required
+        maxlength="150"
+      >
+
+
+      <label for="contact">
+        10-digit mobile number
+      </label>
+
+      <input
+        id="contact"
+        inputmode="numeric"
+        pattern="[0-9]{10}"
+        maxlength="10"
+        required
+      >
+
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="example@gmail.com"
+        required
+      >
+
+
+      <label for="event">
+        Competition
+      </label>
+
       <select id="event" required>
-        <option value="">Select competition</option>
-        <option>Krishna Vesa Competition</option>
-        <option>Bhagavad Gita Shloka Recitation</option>
-        <option>Krishna Song / Bhajan Singing</option>
-        <option>Dance Event on Krishna's Song</option>
-        <option>Krishna Drawing Competition</option>
+
+        <option value="">
+          Select competition
+        </option>
+
+        <option>
+          Krishna Vesa Competition
+        </option>
+
+        <option>
+          Bhagavad Gita Shloka Recitation
+        </option>
+
+        <option>
+          Krishna Song / Bhajan Singing
+        </option>
+
+        <option>
+          Dance Event on Krishna's Song
+        </option>
+
+        <option>
+          Krishna Drawing Competition
+        </option>
+
       </select>
 
+
+      <!-- PAYMENT -->
+
       <div class="upi">
-        <strong>Registration fee: ₹40</strong>
-        <p>Pay ₹40 by UPI to <strong>9437460784@ybl</strong>.</p>
-        <div class="qr" id="qrcode"></div>
-        <a id="payLink" href="#" target="_blank" rel="noopener">
-          <button type="button">Pay ₹40 by UPI</button>
+
+        <strong>
+          Registration fee: ₹40
+        </strong>
+
+        <p>
+          Pay ₹40 by UPI to
+          <strong>9437460784@ybl</strong>.
+        </p>
+
+        <div
+          class="qr"
+          id="qrcode"
+        ></div>
+
+
+        <a
+          id="payLink"
+          href="#"
+          target="_blank"
+          rel="noopener"
+        >
+
+          <button
+            type="button"
+          >
+            Pay ₹40 by UPI
+          </button>
+
         </a>
-        <p class="small">After payment, submit this registration. An admin will verify the payment and mark the registration PAID.</p>
+
+
+        <p class="small">
+          After payment, submit this registration.
+          An admin will verify the payment and mark
+          the registration PAID.
+        </p>
+
       </div>
 
-      <button id="submitBtn" type="submit">Submit Registration</button>
-      <div class="success" id="success"></div>
-      <div class="error" id="error"></div>
-      <div class="status-check">
-  <h3>Check Payment Status</h3>
 
-  <input
-    type="text"
-    id="statusRegistrationId"
-    placeholder="Enter Registration ID"
-  >
+      <button
+        id="submitBtn"
+        type="submit"
+      >
+        Submit Registration
+      </button>
 
-  <button type="button" onclick="checkPaymentStatus()">
-  Check Payment Status
-</button>
-  <div id="statusResult"></div>
-  <button
-  id="receiptBtn"
-  type="button"
-  onclick="printRegistrationReceipt()"
-  style="display:none;"
->
-  🧾 Print / Save Receipt
-</button>
-</div>
+
+      <div
+        class="success"
+        id="success"
+      ></div>
+
+
+      <div
+        class="error"
+        id="error"
+      ></div>
+
     </form>
+
+
+    <!-- PAYMENT STATUS -->
+
+    <div class="status-box">
+
+      <h2>
+        Check Payment Status
+      </h2>
+
+      <label for="statusRegistrationId">
+        Registration ID
+      </label>
+
+      <input
+        id="statusRegistrationId"
+        placeholder="Example: KJC2026-XXXXXXXX"
+      >
+
+
+      <button
+        id="statusBtn"
+        type="button"
+        onclick="checkPaymentStatus()"
+      >
+        Check Payment Status
+      </button>
+
+
+      <!-- IMPORTANT:
+           This is the element used by the status function
+           and the receipt function.
+      -->
+
+      <div id="statusResult"></div>
+
+
+      <!-- RECEIPT BUTTON -->
+
+      <button
+        id="receiptBtn"
+        type="button"
+        onclick="printRegistrationReceipt()"
+        style="display:none;"
+      >
+        🧾 Print / Save Receipt
+      </button>
+
+    </div>
+
   </section>
+
 </main>
 
-<footer>ISKCON Rayagada • Krishna Janmashtami 2026</footer>
+
+<footer>
+  ISKCON Rayagada • Krishna Janmashtami 2026
+</footer>
+
+
+<!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- QR CODE -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
+<!-- YOUR CONFIG -->
+
 <script src="config.js"></script>
+
 <script src="supabase_client.js?v=2"></script>
+
+
 <script>
-  const upi = "upi://pay?pa=" + encodeURIComponent(EVENT_CONFIG.upiId)
-    + "&pn=" + encodeURIComponent("ISKCON Rayagada")
-    + "&am=" + EVENT_CONFIG.amount + "&cu=INR";
+
+  /* =========================
+     UPI PAYMENT
+     ========================= */
+
+  const upi =
+    "upi://pay?pa=" +
+    encodeURIComponent(EVENT_CONFIG.upiId) +
+    "&pn=" +
+    encodeURIComponent("ISKCON Rayagada") +
+    "&am=" +
+    EVENT_CONFIG.amount +
+    "&cu=INR";
+
+
   document.getElementById("payLink").href = upi;
-  new QRCode(document.getElementById("qrcode"), {text:upi,width:170,height:170});
 
-  const form = document.getElementById("registrationForm");
-  const success = document.getElementById("success");
-  const error = document.getElementById("error");
-  const btn = document.getElementById("submitBtn");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    success.style.display = "none"; error.style.display = "none";
-    btn.disabled = true; btn.textContent = "Submitting...";
+  new QRCode(
+    document.getElementById("qrcode"),
+    {
+      text: upi,
+      width: 170,
+      height: 170
+    }
+  );
+
+
+  /* =========================
+     REGISTRATION
+     ========================= */
+
+  const form =
+    document.getElementById("registrationForm");
+
+  const success =
+    document.getElementById("success");
+
+  const error =
+    document.getElementById("error");
+
+  const btn =
+    document.getElementById("submitBtn");
+
+
+  form.addEventListener(
+    "submit",
+    async (e) => {
+
+      e.preventDefault();
+
+      success.style.display = "none";
+      error.style.display = "none";
+
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+
+
+      try {
+
+        const registrationId =
+          await window.createRegistration({
+
+            name:
+              document
+                .getElementById("name")
+                .value
+                .trim(),
+
+            className:
+              document
+                .getElementById("className")
+                .value
+                .trim(),
+
+            institution:
+              document
+                .getElementById("institution")
+                .value
+                .trim(),
+
+            contact:
+              document
+                .getElementById("contact")
+                .value
+                .trim(),
+
+            email:
+              document
+                .getElementById("email")
+                .value
+                .trim(),
+
+            event:
+              document
+                .getElementById("event")
+                .value
+
+          });
+
+
+        success.innerHTML =
+          "Registration received successfully!<br><br>" +
+
+          "<strong>Your Registration ID:</strong><br>" +
+
+          "<span style='font-size:22px'>" +
+
+          registrationId +
+
+          "</span><br><br>" +
+
+          "Please save this Registration ID. " +
+
+          "You will need it to check your payment status.";
+
+
+        success.style.display = "block";
+
+
+        /*
+          Automatically put the new ID
+          into the status box.
+        */
+
+        document
+          .getElementById("statusRegistrationId")
+          .value = registrationId;
+
+
+        form.reset();
+
+
+      } catch (err) {
+
+        console.error(err);
+
+        error.textContent =
+          err.message ||
+          "Registration failed. Please try again.";
+
+        error.style.display = "block";
+
+      } finally {
+
+        btn.disabled = false;
+
+        btn.textContent =
+          "Submit Registration";
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     CHECK PAYMENT STATUS
+     ========================= */
+
+  async function checkPaymentStatus() {
+
+    const registrationId =
+      document
+        .getElementById("statusRegistrationId")
+        .value
+        .trim();
+
+
+    const result =
+      document.getElementById("statusResult");
+
+
+    const receiptBtn =
+      document.getElementById("receiptBtn");
+
+
+    receiptBtn.style.display = "none";
+
+
+    if (!registrationId) {
+
+      result.innerHTML =
+        "Please enter your Registration ID.";
+
+      result.style.display = "block";
+
+      return;
+    }
+
+
+    result.innerHTML =
+      "Checking...";
+
+    result.style.display = "block";
+
 
     try {
-      const registrationId = await window.createRegistration({
-  name: document.getElementById("name").value.trim(),
-  className: document.getElementById("className").value.trim(),
-  institution: document.getElementById("institution").value.trim(),
-  contact: document.getElementById("contact").value.trim(),
-  email: document.getElementById("email").value.trim(),
-  event: document.getElementById("event").value
-});
-     success.textContent = "Registration received — your registration is complete. Your payment will be verified by the Event Coordinator, ISKCON Rayagada. Your Registration ID is " + registrationId + ". Please keep it safe.";
-      success.style.display = "block";
-      form.reset();
-    } catch (err) {
-      error.textContent = err.message || "Registration failed. Please try again.";
-      error.style.display = "block";
-    } finally {
-      btn.disabled = false; btn.textContent = "Submit Registration";
-    }
-  });
-  
-  // YOUR STATUS CHECK CODE GOES HERE
- async function checkPaymentStatus() {
-  const details = document.getElementById("statusResult");
 
-  if (!details || !details.innerText.trim()) {
-    alert("Please check your Registration ID first.");
-    return;
-  }
+      /*
+        This calls the Supabase function
+        created for public registration-status checking.
+      */
 
-  receiptWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Registration Receipt - ISKCON Rayagada</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          padding: 40px;
-          color: #27150d;
-        }
-
-        .receipt {
-          max-width: 650px;
-          margin: auto;
-          border: 2px solid #7a1f16;
-          border-radius: 16px;
-          padding: 30px;
-        }
-
-        h1 {
-          color: #7a1f16;
-          text-align: center;
-        }
-
-        h2 {
-          text-align: center;
-        }
-
-        .details {
-          margin-top: 25px;
-          font-size: 17px;
-          line-height: 1.8;
-        }
-
-        .footer {
-          margin-top: 30px;
-          text-align: center;
-          font-size: 13px;
-          color: #666;
-        }
-
-        @media print {
-          button {
-            display: none;
+      const {
+        data,
+        error
+      } =
+        await window.supabaseClient.rpc(
+          "check_registration_details",
+          {
+            p_registration_id:
+              registrationId
           }
-        }
-      </style>
-    </head>
+        );
 
-    <body>
-      <div class="receipt">
-        <h1>ISKCON Rayagada</h1>
-        <h2>Krishna Janmashtami Cultural Contest 2026</h2>
 
-        <div class="details">
-          ${details.innerHTML}
-        </div>
+      if (error) {
 
-        <div class="footer">
-          <p>03 & 04 September 2026</p>
-          <p>Please keep this receipt for the event.</p>
-        </div>
+        console.error(
+          "Status error:",
+          error
+        );
 
-        <button onclick="window.print()">
-          Print Receipt
-        </button>
-      </div>
-    </body>
-    </html>
-  `);
+        result.innerHTML =
+          "Unable to check registration. Please try again.";
 
-  const registrationId =
-    document.getElementById("statusRegistrationId").value.trim();
+        return;
+      }
 
-  const result =
-    document.getElementById("statusResult");
 
-  if (!registrationId) {
-    result.innerHTML = "Please enter your Registration ID.";
-    return;
-  }
+      if (!data || data.length === 0) {
 
-  result.innerHTML = "Checking...";
+        result.innerHTML =
+          "Registration ID not found.";
 
-  try {
-    const { data, error } =
-      await window.supabaseClient.rpc(
-        "check_registration_status",
-        {
-          p_registration_id: registrationId
-        }
-      );
+        return;
+      }
 
-    if (error) {
-      console.error("Status error:", error);
-      result.innerHTML =
-        "Unable to check registration. Please try again.";
-      return;
-    }
 
-    if (!data || data.length === 0) {
-      result.innerHTML =
-        "Registration ID not found.";
-      return;
-    }
+      const r = data[0];
 
-    const r = data[0];
 
-    let statusText = "";
-    if (r.payment_status === "PAID") {
-      statusText =
-        "🟢 PAID — Payment verified";
-    } else if (r.payment_status === "REJECTED") {
-      statusText =
-        "🔴 REJECTED — Please contact the Event Coordinator";
-    } else {
-      statusText =
-        "🟠 PENDING — Payment verification in progress";
-    }
+      let statusText = "";
 
-    result.innerHTML = `
-      <div style="
-        margin-top:16px;
-        padding:18px;
-        border-radius:12px;
-        background:#fff8ee;
-        border:1px solid #e2c8b5;
-        text-align:left;
-      ">
-        <h3 style="margin-top:0;color:#7a1f16;">
+
+      if (
+        r.payment_status === "PAID"
+      ) {
+
+        statusText =
+          "🟢 PAID – Payment verified";
+
+      }
+
+      else if (
+        r.payment_status === "REJECTED"
+      ) {
+
+        statusText =
+          "🔴 REJECTED – Please contact the Event Coordinator.";
+
+      }
+
+      else {
+
+        statusText =
+          "🟡 PENDING – Payment is waiting for verification.";
+
+      }
+
+
+      result.innerHTML = `
+
+        <h3
+          style="
+            margin-top:0;
+            color:#7a1f16;
+          "
+        >
           Registration Details
         </h3>
 
-        <p><strong>Registration ID:</strong> ${r.registration_id}</p>
-        <p><strong>Participant:</strong> ${r.participant_name}</p>
-        <p><strong>Class:</strong> ${r.class_name}</p>
-        <p><strong>Institution:</strong> ${r.institution}</p>
-        <p><strong>Competition:</strong> ${r.event_name}</p>
-        <p><strong>Amount:</strong> ₹${r.amount}</p>
 
-        <p style="
-          font-size:18px;
-          font-weight:800;
-          margin-bottom:0;
-        ">
+        <p>
+          <strong>Registration ID:</strong>
+          ${r.registration_id}
+        </p>
+
+
+        <p>
+          <strong>Participant:</strong>
+          ${r.participant_name}
+        </p>
+
+
+        <p>
+          <strong>Class:</strong>
+          ${r.class_name}
+        </p>
+
+
+        <p>
+          <strong>Institution:</strong>
+          ${r.institution}
+        </p>
+
+
+        <p>
+          <strong>Competition:</strong>
+          ${r.event_name}
+        </p>
+
+
+        <p>
+          <strong>Amount:</strong>
+          ₹${r.amount}
+        </p>
+
+
+        <p
+          style="
+            font-size:18px;
+            font-weight:800;
+            margin-bottom:0;
+          "
+        >
           ${statusText}
         </p>
-      </div>
-    `;
-document.getElementById("receiptBtn").style.display = "block";
-  } catch (error) {
-    console.error(error);
-    result.innerHTML =
-      "Unable to check registration. Please try again.";
+
+      `;
+
+
+      /*
+        Show receipt button after
+        successful status lookup.
+      */
+
+      receiptBtn.style.display = "block";
+
+
+    } catch (err) {
+
+      console.error(err);
+
+      result.innerHTML =
+        "Unable to check registration. Please try again.";
+
+    }
+
   }
-}
+
+
+  /* =========================
+     PRINT REGISTRATION RECEIPT
+     ========================= */
+
   function printRegistrationReceipt() {
-  const details = document.getElementById("statusResult");
 
-  if (!details || !details.innerText.trim()) {
-    alert("Please check your Registration ID first.");
-    return;
-  }
+    const details =
+      document.getElementById(
+        "statusResult"
+      );
 
-  const receiptWindow = window.open("", "_blank", "width=800,height=900");
 
-  if (!receiptWindow) {
-    alert("Please allow pop-ups for this website.");
-    return;
-  }
+    if (
+      !details ||
+      !details.innerText.trim()
+    ) {
 
-  receiptWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Registration Receipt - ISKCON Rayagada</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          padding: 40px;
-          color: #27150d;
-        }
+      alert(
+        "Please check your Registration ID first."
+      );
 
-        .receipt {
-          max-width: 650px;
-          margin: auto;
-          border: 2px solid #7a1f16;
-          border-radius: 16px;
-          padding: 30px;
-        }
+      return;
+    }
 
-        h1 {
-          color: #7a1f16;
-          text-align: center;
-        }
 
-        h2 {
-          text-align: center;
-        }
+    const receiptWindow =
+      window.open(
+        "",
+        "_blank",
+        "width=800,height=900"
+      );
 
-        .details {
-          margin-top: 25px;
-          font-size: 17px;
-          line-height: 1.8;
-        }
 
-        .footer {
-          margin-top: 30px;
-          text-align: center;
-          font-size: 13px;
-          color: #666;
-        }
+    if (!receiptWindow) {
 
-        @media print {
-          button {
-            display: none;
+      alert(
+        "Please allow pop-ups for this website to print the receipt."
+      );
+
+      return;
+    }
+
+
+    receiptWindow.document.write(`
+
+      <!DOCTYPE html>
+
+      <html>
+
+      <head>
+
+        <title>
+          Registration Receipt - ISKCON Rayagada
+        </title>
+
+
+        <style>
+
+          body {
+
+            font-family:
+              Arial,
+              sans-serif;
+
+            padding:40px;
+
+            color:#27150d;
+
+            background:#fff8ee;
+
           }
-        }
-      </style>
-    </head>
 
-    <body>
-      <div class="receipt">
-        <h1>ISKCON Rayagada</h1>
-        <h2>Krishna Janmashtami Cultural Contest 2026</h2>
 
-        <div class="details">
-          ${details.innerHTML}
+          .receipt {
+
+            max-width:650px;
+
+            margin:auto;
+
+            border:
+              2px solid #7a1f16;
+
+            border-radius:16px;
+
+            padding:30px;
+
+            background:white;
+
+          }
+
+
+          h1 {
+
+            color:#7a1f16;
+
+            text-align:center;
+
+            margin-bottom:8px;
+
+          }
+
+
+          h2 {
+
+            text-align:center;
+
+            margin-top:0;
+
+          }
+
+
+          .details {
+
+            margin-top:25px;
+
+            font-size:17px;
+
+            line-height:1.8;
+
+          }
+
+
+          .footer {
+
+            margin-top:30px;
+
+            text-align:center;
+
+            font-size:13px;
+
+            color:#666;
+
+          }
+
+
+          .print-button {
+
+            display:block;
+
+            width:100%;
+
+            padding:13px;
+
+            margin-top:25px;
+
+            border:0;
+
+            border-radius:10px;
+
+            background:#7a1f16;
+
+            color:white;
+
+            font-weight:bold;
+
+            font-size:16px;
+
+            cursor:pointer;
+
+          }
+
+
+          @media print {
+
+            .print-button {
+
+              display:none;
+
+            }
+
+            body {
+
+              background:white;
+
+            }
+
+          }
+
+        </style>
+
+      </head>
+
+
+      <body>
+
+
+        <div class="receipt">
+
+
+          <h1>
+            ISKCON Rayagada
+          </h1>
+
+
+          <h2>
+            Krishna Janmashtami Cultural Contest 2026
+          </h2>
+
+
+          <div class="details">
+
+            ${details.innerHTML}
+
+          </div>
+
+
+          <div class="footer">
+
+            <p>
+              <strong>
+                03 & 04 September 2026
+              </strong>
+            </p>
+
+            <p>
+              Please keep this receipt for the event.
+            </p>
+
+            <p>
+              ISKCON Rayagada
+            </p>
+
+          </div>
+
+
+          <button
+            class="print-button"
+            onclick="window.print()"
+          >
+            🖨️ Print / Save Receipt
+          </button>
+
+
         </div>
 
-        <div class="footer">
-          <p>03 & 04 September 2026</p>
-          <p>Please keep this receipt for the event.</p>
-        </div>
 
-        <button onclick="window.print()">
-          Print Receipt
-        </button>
-      </div>
-    </body>
-    </html>
-  `);
+      </body>
 
-  receiptWindow.document.close();
-}
+      </html>
+
+    `);
+
+
+    receiptWindow.document.close();
+
+
+    /*
+      Give the new window time to render
+      before opening the print dialog.
+    */
+
+    setTimeout(
+      () => {
+
+        receiptWindow.focus();
+
+      },
+      300
+    );
+
+  }
 
 </script>
+
+
 </body>
 </html>
+```
