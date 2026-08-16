@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Dashboard</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -37,12 +38,37 @@
       background: #7a1616;
       color: white;
     }
+
+    button {
+      padding: 8px 12px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .paid-btn {
+      background: #198754;
+      color: white;
+    }
+
+    .reject-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 
 <body>
 
   <h1>Admin Dashboard</h1>
+
   <p id="status">Loading registrations...</p>
 
   <table id="registrationsTable">
@@ -56,41 +82,55 @@
         <th>Event</th>
         <th>Amount</th>
         <th>Payment Status</th>
+        <th>Action</th>
       </tr>
     </thead>
+
     <tbody></tbody>
   </table>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase_client.js"></script>
+  <script src="admin_auth.js"></script>
 
   <script>
-  async function checkAdmin() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
 
-  if (!user) {
-    window.location.href = "admin.html";
-    return false;
-  }
+    async function checkAdmin() {
 
-  const { data: profile, error } = await supabaseClient
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
+      const {
+        data: { user }
+      } = await supabaseClient.auth.getUser();
 
-  if (error || !profile || profile.role !== "admin") {
-    await supabaseClient.auth.signOut();
-    window.location.href = "admin.html";
-    return false;
-  }
+      if (!user) {
+        window.location.href = "admin.html";
+        return false;
+      }
 
-  return true;
-}
+      const { data: profile, error } = await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
 
-  async function loadRegistrations() {
+      if (error || !profile || profile.role !== "admin") {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href = "admin.html";
+
+        return false;
+      }
+
+      return true;
+    }
+
+
+    async function loadRegistrations() {
+
       const status = document.getElementById("status");
       const tbody = document.querySelector("#registrationsTable tbody");
+
+      tbody.innerHTML = "";
 
       const { data, error } = await supabaseClient
         .from("registrations")
@@ -98,36 +138,127 @@
         .order("created_at", { ascending: false });
 
       if (error) {
+
         console.error(error);
-        status.textContent = "Could not load registrations.";
+
+        status.textContent =
+          "Could not load registrations.";
+
         return;
       }
 
-      status.textContent = `${data.length} registration(s) found.`;
+      status.textContent =
+        `${data.length} registration(s) found.`;
+
 
       data.forEach(row => {
+
         const tr = document.createElement("tr");
 
+        let actionHTML = "";
+
+        if (row.payment_status === "PENDING") {
+
+          actionHTML = `
+            <button
+              class="paid-btn"
+              onclick="changePaymentStatus('${row.registration_id}', 'PAID')">
+              Mark PAID
+            </button>
+
+            <button
+              class="reject-btn"
+              onclick="changePaymentStatus('${row.registration_id}', 'REJECTED')">
+              Reject
+            </button>
+          `;
+
+        } else {
+
+          actionHTML = `
+            <strong>${row.payment_status}</strong>
+          `;
+        }
+
+
         tr.innerHTML = `
+
           <td>${row.registration_id ?? ""}</td>
+
           <td>${row.participant_name ?? ""}</td>
+
           <td>${row.class_name ?? ""}</td>
+
           <td>${row.institution ?? ""}</td>
+
           <td>${row.contact_number ?? ""}</td>
+
           <td>${row.event_name ?? ""}</td>
-          <td>${row.amount ?? ""}</td>
+
+          <td>₹${row.amount ?? ""}</td>
+
           <td>${row.payment_status ?? ""}</td>
+
+          <td>${actionHTML}</td>
+
         `;
 
         tbody.appendChild(tr);
+
       });
+
     }
 
+
+    async function changePaymentStatus(registrationId, newStatus) {
+
+      const message =
+        newStatus === "PAID"
+          ? "Mark this registration as PAID?"
+          : "Reject this registration?";
+
+      if (!confirm(message)) {
+        return;
+      }
+
+
+      try {
+
+        await verifyRegistration(
+          registrationId,
+          newStatus
+        );
+
+        alert(
+          newStatus === "PAID"
+            ? "Payment marked as PAID."
+            : "Registration marked as REJECTED."
+        );
+
+        await loadRegistrations();
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Could not update payment status: " +
+          error.message
+        );
+
+      }
+
+    }
+
+
     checkAdmin().then(isAdmin => {
-  if (isAdmin) {
-    loadRegistrations();
-  }
-});
+
+      if (isAdmin) {
+        loadRegistrations();
+      }
+
+    });
+
   </script>
 
 </body>
