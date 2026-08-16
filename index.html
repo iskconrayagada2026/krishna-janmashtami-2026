@@ -88,6 +88,21 @@
       <button id="submitBtn" type="submit">Submit Registration</button>
       <div class="success" id="success"></div>
       <div class="error" id="error"></div>
+      <div class="status-check">
+  <h3>Check Payment Status</h3>
+
+  <input
+    type="text"
+    id="statusRegistrationId"
+    placeholder="Enter Registration ID"
+  >
+
+  <button type="button" id="checkStatusBtn">
+    Check Payment Status
+  </button>
+
+  <div id="statusResult"></div>
+</div>
     </form>
   </section>
 </main>
@@ -134,6 +149,56 @@
       btn.disabled = false; btn.textContent = "Submit Registration";
     }
   });
+  });
+  
+  // YOUR STATUS CHECK CODE GOES HERE
+  document.getElementById("checkStatusBtn").addEventListener("click", async () => {
+  const registrationId =
+    document.getElementById("statusRegistrationId").value.trim();
+
+  const result =
+    document.getElementById("statusResult");
+
+  if (!registrationId) {
+    result.textContent = "Please enter your Registration ID.";
+    return;
+  }
+
+  result.textContent = "Checking...";
+
+  try {
+    const { data, error } = await supabaseClient
+      .rpc("check_registration_status", {
+        p_registration_id: registrationId
+      });
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      result.textContent = "Registration ID not found.";
+      return;
+    }
+
+    const status = data[0].payment_status;
+
+    if (status === "PAID") {
+      result.textContent =
+        "🟢 Payment Status: PAID — Your payment has been verified by the Event Coordinator, ISKCON Rayagada.";
+    } else if (status === "REJECTED") {
+      result.textContent =
+        "🔴 Payment Status: REJECTED — Please contact the Event Coordinator, ISKCON Rayagada.";
+    } else {
+      result.textContent =
+        "🟠 Payment Status: PENDING — Your payment is waiting for verification by the Event Coordinator, ISKCON Rayagada.";
+    }
+
+  } catch (error) {
+    console.error(error);
+    result.textContent =
+      "Unable to check status. Please try again.";
+  }
+});
+
 </script>
 </body>
 </html>
