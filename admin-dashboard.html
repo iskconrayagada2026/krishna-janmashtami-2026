@@ -6,71 +6,67 @@
   <title>Admin Dashboard</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 24px;
-      background: #f5f5f5;
-    }
-
-    h1 {
-      color: #7a1616;
-    }
-
-    #status {
-      margin: 15px 0;
-      font-weight: bold;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-
-    th {
-      background: #7a1616;
-      color: white;
-    }
-
-    button {
-      padding: 8px 12px;
-      margin: 2px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .paid-btn {
-      background: #198754;
-      color: white;
-    }
-
-    .reject-btn {
-      background: #dc3545;
-      color: white;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 24px; background: #f5f5f5; color: #222; }
+    h1 { color: #7a1616; margin-bottom: 6px; }
+    .subtitle { margin-top: 0; color: #666; }
+    #status { margin: 15px 0; font-weight: bold; }
+    .cards { display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)); gap: 12px; margin: 18px 0; }
+    .card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 1px 5px rgba(0,0,0,.08); }
+    .card .label { color: #666; font-size: 14px; }
+    .card .value { font-size: 28px; font-weight: bold; margin-top: 5px; }
+    .toolbar { background: white; padding: 14px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .toolbar input, .toolbar select { padding: 9px 10px; border: 1px solid #ccc; border-radius: 6px; min-width: 180px; }
+    .exports { background: white; padding: 14px; border-radius: 10px; margin-bottom: 15px; }
+    .competition-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #eee; }
+    .competition-row:last-child { border-bottom: 0; }
+    button { padding: 8px 12px; margin: 2px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    .paid-btn { background: #198754; color: white; }
+    .reject-btn { background: #dc3545; color: white; }
+    .excel-btn { background: #217346; color: white; }
+    .print-btn { background: #555; color: white; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .table-wrap { overflow-x: auto; background: white; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; white-space: nowrap; }
+    th { background: #7a1616; color: white; }
+    @media (max-width: 800px) { .cards { grid-template-columns: repeat(2, 1fr); } body { padding: 12px; } }
+    @media (max-width: 480px) { .toolbar input, .toolbar select { min-width: 100%; } }
   </style>
 </head>
 
 <body>
 
   <h1>Admin Dashboard</h1>
+  <p class="subtitle">Registration, payment and competition management</p>
+
+  <div class="cards">
+    <div class="card"><div class="label">Total Registrations</div><div class="value" id="totalCount">0</div></div>
+    <div class="card"><div class="label">Pending</div><div class="value" id="pendingCount">0</div></div>
+    <div class="card"><div class="label">Paid</div><div class="value" id="paidCount">0</div></div>
+    <div class="card"><div class="label">Today</div><div class="value" id="todayCount">0</div></div>
+  </div>
+
+  <div class="toolbar">
+    <input id="searchInput" type="search" placeholder="Search ID, name, phone, email...">
+    <select id="statusFilter">
+      <option value="">All payment statuses</option>
+      <option value="PENDING">PENDING</option>
+      <option value="PAID">PAID</option>
+      <option value="REJECTED">REJECTED</option>
+    </select>
+    <select id="competitionFilter"><option value="">All competitions</option></select>
+    <button class="excel-btn" onclick="downloadCurrentView()">Download Current View</button>
+    <button class="print-btn" onclick="window.print()">Print</button>
+  </div>
+
+  <div class="exports">
+    <h2>Competition-wise Excel</h2>
+    <div id="competitionExports">Loading competitions...</div>
+  </div>
 
   <p id="status">Loading registrations...</p>
 
+  <div class="table-wrap">
   <table id="registrationsTable">
     <thead>
       <tr>
@@ -88,8 +84,10 @@
 
     <tbody></tbody>
   </table>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="supabase_client.js"></script>
   <script src="admin_auth.js"></script>
 
@@ -125,12 +123,118 @@
     }
 
 
+
+    let allRegistrations = [];
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    function escapeJs(value) {
+      return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    }
+
+    function filteredRegistrations() {
+      const search = document.getElementById("searchInput").value.trim().toLowerCase();
+      const payment = document.getElementById("statusFilter").value;
+      const competition = document.getElementById("competitionFilter").value;
+
+      return allRegistrations.filter(row => {
+        const haystack = [
+          row.registration_id, row.participant_name, row.contact_number,
+          row.email, row.institution, row.event_name, row.class_name
+        ].join(" ").toLowerCase();
+        return (!search || haystack.includes(search))
+          && (!payment || row.payment_status === payment)
+          && (!competition || (row.event_name || "") === competition);
+      });
+    }
+
+    function updateDashboardCards() {
+      const today = new Date().toISOString().slice(0, 10);
+      document.getElementById("totalCount").textContent = allRegistrations.length;
+      document.getElementById("pendingCount").textContent = allRegistrations.filter(r => r.payment_status === "PENDING").length;
+      document.getElementById("paidCount").textContent = allRegistrations.filter(r => r.payment_status === "PAID").length;
+      document.getElementById("todayCount").textContent = allRegistrations.filter(r => (r.created_at || "").slice(0, 10) === today).length;
+    }
+
+    function populateCompetitionFilters() {
+      const competitions = [...new Set(allRegistrations.map(r => r.event_name).filter(Boolean))].sort();
+      const select = document.getElementById("competitionFilter");
+      select.innerHTML = '<option value="">All competitions</option>' +
+        competitions.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+
+      const box = document.getElementById("competitionExports");
+      box.innerHTML = competitions.length ? competitions.map(c => `
+        <div class="competition-row">
+          <strong>${escapeHtml(c)}</strong>
+          <button class="excel-btn" onclick="downloadCompetition('${escapeJs(c)}')">Download Excel</button>
+        </div>
+      `).join("") : "No competitions found.";
+    }
+
+    function exportRows(rows, filename) {
+      if (!rows.length) { alert("No registrations found for this export."); return; }
+      const exportData = rows.map(row => ({
+        "Registration ID": row.registration_id ?? "",
+        "Participant Name": row.participant_name ?? "",
+        "Class": row.class_name ?? "",
+        "Institution": row.institution ?? "",
+        "Contact Number": row.contact_number ?? "",
+        "Email": row.email ?? "",
+        "Competition": row.event_name ?? "",
+        "Amount": row.amount ?? "",
+        "Payment Status": row.payment_status ?? "",
+        "Registration Date": row.created_at ? new Date(row.created_at).toLocaleString("en-IN") : ""
+      }));
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Registrations");
+      XLSX.writeFile(workbook, filename);
+    }
+
+    function downloadCompetition(competition) {
+      const rows = allRegistrations.filter(r => (r.event_name || "") === competition);
+      const safeName = competition.replace(/[^a-z0-9]+/gi, "_").replace(/^_|_$/g, "");
+      exportRows(rows, `${safeName || "competition"}_registrations.xlsx`);
+    }
+
+    function downloadCurrentView() {
+      exportRows(filteredRegistrations(), "registrations_current_view.xlsx");
+    }
+
+    function renderTable() {
+      const tbody = document.querySelector("#registrationsTable tbody");
+      const rows = filteredRegistrations();
+      tbody.innerHTML = "";
+      document.getElementById("status").textContent = `${rows.length} registration(s) shown of ${allRegistrations.length}.`;
+
+      rows.forEach(row => {
+        const tr = document.createElement("tr");
+        let actionHTML = row.payment_status === "PENDING"
+          ? `<button class="paid-btn" onclick="changePaymentStatus('${escapeJs(row.registration_id)}', 'PAID')">Mark PAID</button>
+             <button class="reject-btn" onclick="changePaymentStatus('${escapeJs(row.registration_id)}', 'REJECTED')">Reject</button>`
+          : `<strong>${escapeHtml(row.payment_status)}</strong>`;
+
+        tr.innerHTML = `
+          <td>${escapeHtml(row.registration_id)}</td>
+          <td>${escapeHtml(row.participant_name)}</td>
+          <td>${escapeHtml(row.class_name)}</td>
+          <td>${escapeHtml(row.institution)}</td>
+          <td>${escapeHtml(row.contact_number)}</td>
+          <td>${escapeHtml(row.event_name)}</td>
+          <td>₹${escapeHtml(row.amount)}</td>
+          <td>${escapeHtml(row.payment_status)}</td>
+          <td>${actionHTML}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
     async function loadRegistrations() {
 
       const status = document.getElementById("status");
       const tbody = document.querySelector("#registrationsTable tbody");
-
-      tbody.innerHTML = "";
 
       const { data, error } = await supabaseClient
         .from("registrations")
@@ -138,77 +242,16 @@
         .order("created_at", { ascending: false });
 
       if (error) {
-
         console.error(error);
-
-        status.textContent =
-          "Could not load registrations.";
-
+        status.textContent = "Could not load registrations.";
         return;
       }
 
-      status.textContent =
-        `${data.length} registration(s) found.`;
-
-
-      data.forEach(row => {
-
-        const tr = document.createElement("tr");
-
-        let actionHTML = "";
-
-        if (row.payment_status === "PENDING") {
-
-          actionHTML = `
-            <button
-              class="paid-btn"
-              onclick="changePaymentStatus('${row.registration_id}', 'PAID')">
-              Mark PAID
-            </button>
-
-            <button
-              class="reject-btn"
-              onclick="changePaymentStatus('${row.registration_id}', 'REJECTED')">
-              Reject
-            </button>
-          `;
-
-        } else {
-
-          actionHTML = `
-            <strong>${row.payment_status}</strong>
-          `;
-        }
-
-
-        tr.innerHTML = `
-
-          <td>${row.registration_id ?? ""}</td>
-
-          <td>${row.participant_name ?? ""}</td>
-
-          <td>${row.class_name ?? ""}</td>
-
-          <td>${row.institution ?? ""}</td>
-
-          <td>${row.contact_number ?? ""}</td>
-
-          <td>${row.event_name ?? ""}</td>
-
-          <td>₹${row.amount ?? ""}</td>
-
-          <td>${row.payment_status ?? ""}</td>
-
-          <td>${actionHTML}</td>
-
-        `;
-
-        tbody.appendChild(tr);
-
-      });
-
+      allRegistrations = data || [];
+      updateDashboardCards();
+      populateCompetitionFilters();
+      renderTable();
     }
-
 
     async function changePaymentStatus(registrationId, newStatus) {
   const message =
@@ -286,8 +329,11 @@
   }
 }
     window.addEventListener("DOMContentLoaded", () => {
-  loadRegistrations();
-});
+      document.getElementById("searchInput").addEventListener("input", renderTable);
+      document.getElementById("statusFilter").addEventListener("change", renderTable);
+      document.getElementById("competitionFilter").addEventListener("change", renderTable);
+      loadRegistrations();
+    });
 
   </script>
 
