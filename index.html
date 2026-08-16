@@ -97,10 +97,9 @@
     placeholder="Enter Registration ID"
   >
 
-  <button type="button" id="checkStatusBtn">
-    Check Payment Status
-  </button>
-
+  <button type="button" onclick="checkPaymentStatus()">
+  Check Payment Status
+</button>
   <div id="statusResult"></div>
 </div>
     </form>
@@ -152,7 +151,7 @@
   });
   
   // YOUR STATUS CHECK CODE GOES HERE
-  document.getElementById("checkStatusBtn").addEventListener("click", async () => {
+  async function checkPaymentStatus() {
   const registrationId =
     document.getElementById("statusRegistrationId").value.trim();
 
@@ -167,12 +166,19 @@
   result.textContent = "Checking...";
 
   try {
-    const { data, error } = await window,supabaseClient
-      .rpc("check_registration_status", {
-        p_registration_id: registrationId
-      });
+    const { data, error } =
+      await window.supabaseClient.rpc(
+        "check_registration_status",
+        {
+          p_registration_id: registrationId
+        }
+      );
 
-    if (error) throw error;
+    if (error) {
+      console.error("Status error:", error);
+      result.textContent = "Unable to check status. Please try again.";
+      return;
+    }
 
     if (!data || data.length === 0) {
       result.textContent = "Registration ID not found.";
@@ -197,7 +203,11 @@
     result.textContent =
       "Unable to check status. Please try again.";
   }
-});
+}
+
+document
+  .getElementById("checkStatusBtn")
+  .addEventListener("click", checkPaymentStatus);
 
 </script>
 </body>
