@@ -151,6 +151,90 @@
   
   // YOUR STATUS CHECK CODE GOES HERE
  async function checkPaymentStatus() {
+   function printRegistrationReceipt() {
+  const details = document.getElementById("statusResult");
+
+  if (!details || !details.innerText.trim()) {
+    alert("Please check your Registration ID first.");
+    return;
+  }
+
+  const receiptWindow = window.open("", "_blank", "width=800,height=900");
+
+  receiptWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Registration Receipt - ISKCON Rayagada</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 40px;
+          color: #27150d;
+        }
+
+        .receipt {
+          max-width: 650px;
+          margin: auto;
+          border: 2px solid #7a1f16;
+          border-radius: 16px;
+          padding: 30px;
+        }
+
+        h1 {
+          color: #7a1f16;
+          text-align: center;
+        }
+
+        h2 {
+          text-align: center;
+        }
+
+        .details {
+          margin-top: 25px;
+          font-size: 17px;
+          line-height: 1.8;
+        }
+
+        .footer {
+          margin-top: 30px;
+          text-align: center;
+          font-size: 13px;
+          color: #666;
+        }
+
+        @media print {
+          button {
+            display: none;
+          }
+        }
+      </style>
+    </head>
+
+    <body>
+      <div class="receipt">
+        <h1>ISKCON Rayagada</h1>
+        <h2>Krishna Janmashtami Cultural Contest 2026</h2>
+
+        <div class="details">
+          ${details.innerHTML}
+        </div>
+
+        <div class="footer">
+          <p>03 & 04 September 2026</p>
+          <p>Please keep this receipt for the event.</p>
+        </div>
+
+        <button onclick="window.print()">
+          Print Receipt
+        </button>
+      </div>
+    </body>
+    </html>
+  `);
+
+  receiptWindow.document.close();
+}
   const registrationId =
     document.getElementById("statusRegistrationId").value.trim();
 
