@@ -150,7 +150,7 @@
   });
   
   // YOUR STATUS CHECK CODE GOES HERE
-  async function checkPaymentStatus() {
+ async function checkPaymentStatus() {
   const registrationId =
     document.getElementById("statusRegistrationId").value.trim();
 
@@ -158,16 +158,16 @@
     document.getElementById("statusResult");
 
   if (!registrationId) {
-    result.textContent = "Please enter your Registration ID.";
+    result.innerHTML = "Please enter your Registration ID.";
     return;
   }
 
-  result.textContent = "Checking...";
+  result.innerHTML = "Checking...";
 
   try {
     const { data, error } =
       await window.supabaseClient.rpc(
-        "check_registration_status",
+        "check_registration_details",
         {
           p_registration_id: registrationId
         }
@@ -175,32 +175,65 @@
 
     if (error) {
       console.error("Status error:", error);
-      result.textContent = "Unable to check status. Please try again.";
+      result.innerHTML =
+        "Unable to check registration. Please try again.";
       return;
     }
 
     if (!data || data.length === 0) {
-      result.textContent = "Registration ID not found.";
+      result.innerHTML =
+        "Registration ID not found.";
       return;
     }
 
-    const status = data[0].payment_status;
+    const r = data[0];
 
-    if (status === "PAID") {
-      result.textContent =
-        "🟢 Payment Status: PAID — Your payment has been verified by the Event Coordinator, ISKCON Rayagada.";
-    } else if (status === "REJECTED") {
-      result.textContent =
-        "🔴 Payment Status: REJECTED — Please contact the Event Coordinator, ISKCON Rayagada.";
+    let statusText = "";
+    if (r.payment_status === "PAID") {
+      statusText =
+        "🟢 PAID — Payment verified";
+    } else if (r.payment_status === "REJECTED") {
+      statusText =
+        "🔴 REJECTED — Please contact the Event Coordinator";
     } else {
-      result.textContent =
-        "🟠 Payment Status: PENDING — Your payment is waiting for verification by the Event Coordinator, ISKCON Rayagada.";
+      statusText =
+        "🟠 PENDING — Payment verification in progress";
     }
+
+    result.innerHTML = `
+      <div style="
+        margin-top:16px;
+        padding:18px;
+        border-radius:12px;
+        background:#fff8ee;
+        border:1px solid #e2c8b5;
+        text-align:left;
+      ">
+        <h3 style="margin-top:0;color:#7a1f16;">
+          Registration Details
+        </h3>
+
+        <p><strong>Registration ID:</strong> ${r.registration_id}</p>
+        <p><strong>Participant:</strong> ${r.participant_name}</p>
+        <p><strong>Class:</strong> ${r.class_name}</p>
+        <p><strong>Institution:</strong> ${r.institution}</p>
+        <p><strong>Competition:</strong> ${r.event_name}</p>
+        <p><strong>Amount:</strong> ₹${r.amount}</p>
+
+        <p style="
+          font-size:18px;
+          font-weight:800;
+          margin-bottom:0;
+        ">
+          ${statusText}
+        </p>
+      </div>
+    `;
 
   } catch (error) {
     console.error(error);
-    result.textContent =
-      "Unable to check status. Please try again.";
+    result.innerHTML =
+      "Unable to check registration. Please try again.";
   }
 }
 
