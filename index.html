@@ -116,7 +116,7 @@
     btn.disabled = true; btn.textContent = "Submitting...";
 
     try {
-      const registrationId = await createRegistration({
+      const registrationId = await window.createRegistration({
   name: document.getElementById("name").value.trim(),
   className: document.getElementById("className").value.trim(),
   institution: document.getElementById("institution").value.trim(),
