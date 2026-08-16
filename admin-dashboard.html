@@ -211,53 +211,80 @@
 
 
     async function changePaymentStatus(registrationId, newStatus) {
+  const message =
+    newStatus === "PAID"
+      ? "Mark this registration as PAID?"
+      : "Reject this registration?";
 
-      const message =
-        newStatus === "PAID"
-          ? "Mark this registration as PAID?"
-          : "Reject this registration?";
+  if (!confirm(message)) {
+    return;
+  }
 
-      if (!confirm(message)) {
-        return;
+  try {
+    // 1. Update payment status
+    await verifyRegistration(
+      registrationId,
+      newStatus
+    );
+
+    // 2. If marked PAID, send verification email
+    if (newStatus === "PAID") {
+
+      // Get registration email
+      const { data: registration, error: emailError } =
+        await supabaseClient
+          .from("registrations")
+          .select("email")
+          .eq("registration_id", registrationId)
+          .single();
+
+      if (emailError) {
+        console.error("Could not get registration email:", emailError);
+      } else if (registration?.email) {
+
+        // Call Supabase Edge Function
+        const { data: emailResult, error: sendError } =
+          await supabaseClient.functions.invoke(
+            "send-payment-email",
+            {
+              body: {
+                email: registration.email,
+                registration_id: registrationId
+              }
+            }
+          );
+
+        if (sendError) {
+          console.error(
+            "Payment email error:",
+            sendError
+          );
+        } else {
+          console.log(
+            "Payment verification email sent:",
+            emailResult
+          );
+        }
       }
-
-
-      try {
-
-        await verifyRegistration(
-          registrationId,
-          newStatus
-        );
-
-        alert(
-          newStatus === "PAID"
-            ? "Payment marked as PAID."
-            : "Registration marked as REJECTED."
-        );
-
-        await loadRegistrations();
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert(
-          "Could not update payment status: " +
-          error.message
-        );
-
-      }
-
     }
 
+    alert(
+      newStatus === "PAID"
+        ? "Payment marked as PAID. Verification email sent."
+        : "Registration marked as REJECTED."
+    );
 
-    checkAdmin().then(isAdmin => {
+    await loadRegistrations();
 
-      if (isAdmin) {
-        loadRegistrations();
-      }
+  } catch (error) {
+    console.error(error);
 
-    });
+    alert(
+      "Could not update payment status: " +
+      error.message
+    );
+  }
+}
 
   </script>
 
