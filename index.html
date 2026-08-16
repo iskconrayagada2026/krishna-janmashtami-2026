@@ -4,1116 +4,2295 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Krishna Janmashtami Cultural Contest 2026</title>
+  <title>Krishna Janmashtami Cultural Contest 2026 | ISKCON Rayagada</title>
 
   <link rel="icon" href="rayagada-logo.png">
 
   <style>
+    :root {
+      --pink: #e989a9;
+      --pink-dark: #c95f86;
+      --pink-light: #fff0f5;
+
+      --sky: #79c9ed;
+      --sky-dark: #398fbd;
+      --sky-light: #eaf8ff;
+
+      --white: #ffffff;
+      --cream: #fffdfb;
+
+      --text: #44313a;
+      --muted: #75666d;
+
+      --gold: #d6a53c;
+      --gold-light: #fff5d9;
+
+      --green: #27845c;
+      --red: #bd4141;
+
+      --shadow:
+        0 12px 35px rgba(72, 57, 67, 0.10);
+    }
+
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #fff8ee;
-      color: #27150d;
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(233, 137, 169, 0.16),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(121, 201, 237, 0.18),
+          transparent 30%
+        ),
+        linear-gradient(
+          180deg,
+          #fff8fb 0%,
+          #f5fbff 45%,
+          #fffafb 100%
+        );
+
+      min-height: 100vh;
     }
+
+
+    /* =================================
+       DECORATIVE BACKGROUND
+       ================================= */
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.20;
+
+      background-image:
+        radial-gradient(
+          circle,
+          rgba(233, 137, 169, 0.20) 1px,
+          transparent 1px
+        );
+
+      background-size: 32px 32px;
+
+      z-index: -1;
+    }
+
+
+    /* =================================
+       HEADER
+       ================================= */
 
     header {
-      padding: 34px 18px;
+      position: relative;
+      overflow: hidden;
+
+      padding: 34px 18px 48px;
+
       text-align: center;
-      background: linear-gradient(135deg, #7a1f16, #d86b1f);
+
       color: white;
+
+      background:
+        radial-gradient(
+          circle at 20% 20%,
+          rgba(255, 255, 255, 0.28),
+          transparent 22%
+        ),
+        radial-gradient(
+          circle at 82% 5%,
+          rgba(255, 255, 255, 0.24),
+          transparent 25%
+        ),
+        linear-gradient(
+          135deg,
+          #e88bab 0%,
+          #d979a1 35%,
+          #79c9ed 100%
+        );
+
+      box-shadow:
+        0 10px 30px rgba(80, 70, 80, 0.14);
     }
 
-    header img {
-      width: 82px;
-      height: 82px;
-      object-fit: contain;
-      background: white;
+
+    header::before {
+      content: "";
+
+      position: absolute;
+
+      width: 300px;
+      height: 300px;
+
+      left: -130px;
+      bottom: -210px;
+
       border-radius: 50%;
-      padding: 7px;
+
+      border:
+        1px solid rgba(255,255,255,0.25);
+
+      box-shadow:
+        0 0 0 35px rgba(255,255,255,0.06),
+        0 0 0 70px rgba(255,255,255,0.04);
     }
 
-    h1 {
-      margin: 14px 0 6px;
-      font-size: clamp(26px, 5vw, 42px);
+
+    header::after {
+      content: "";
+
+      position: absolute;
+
+      width: 260px;
+      height: 260px;
+
+      right: -100px;
+      top: -150px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid rgba(255,255,255,0.28);
     }
 
-    .sub {
+
+    .hero {
+      position: relative;
+      z-index: 2;
+
+      max-width: 900px;
+
+      margin: auto;
+    }
+
+
+    /* =================================
+       ISKCON LOGO
+       ================================= */
+
+    .logo-container {
+      width: 115px;
+      height: 115px;
+
+      margin: 0 auto;
+
+      padding: 8px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: white;
+
+      border-radius: 50%;
+
+      border:
+        4px solid rgba(255, 255, 255, 0.75);
+
+      box-shadow:
+        0 0 0 7px rgba(255,255,255,0.13),
+        0 12px 35px rgba(72, 45, 60, 0.18);
+    }
+
+
+    .logo-container img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      border-radius: 50%;
+    }
+
+
+    .feather {
+      margin-top: 14px;
+
+      font-size: 28px;
+
+      filter:
+        drop-shadow(
+          0 3px 5px rgba(0,0,0,0.12)
+        );
+    }
+
+
+    header h1 {
+      margin: 9px 0 8px;
+
+      font-size:
+        clamp(28px, 5vw, 46px);
+
+      line-height: 1.13;
+
+      letter-spacing: -0.5px;
+
+      text-shadow:
+        0 3px 12px rgba(90, 50, 65, 0.16);
+    }
+
+
+    .subtitle {
       margin: 0;
-      font-size: 16px;
+
+      font-size:
+        clamp(15px, 2vw, 18px);
+
+      opacity: 0.96;
     }
+
+
+    .event-pills {
+      margin-top: 20px;
+
+      display: flex;
+
+      justify-content: center;
+
+      flex-wrap: wrap;
+
+      gap: 9px;
+    }
+
+
+    .pill {
+      padding: 8px 15px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,0.18);
+
+      border:
+        1px solid rgba(255,255,255,0.35);
+
+      backdrop-filter: blur(7px);
+
+      font-size: 14px;
+    }
+
+
+    .gold-line {
+      width: min(420px, 80%);
+
+      height: 2px;
+
+      margin: 27px auto 0;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          #ffe7a1,
+          white,
+          #ffe7a1,
+          transparent
+        );
+    }
+
+
+    /* =================================
+       MAIN
+       ================================= */
 
     main {
-      max-width: 1050px;
-      margin: 24px auto;
-      padding: 0 16px;
+      max-width: 1120px;
+
+      margin: 32px auto;
+
+      padding:
+        0 17px 35px;
+
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+
+      grid-template-columns:
+        0.92fr 1.08fr;
+
+      gap: 24px;
     }
+
 
     .card {
-      background: white;
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 8px 30px #00000012;
+      position: relative;
+
+      background:
+        rgba(255,255,255,0.96);
+
+      border-radius: 22px;
+
+      padding: 26px;
+
+      border:
+        1px solid rgba(233,137,169,0.16);
+
+      box-shadow: var(--shadow);
+
+      overflow: hidden;
     }
 
-    .info {
-      background: #fff1dc;
+
+    .card::before {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      top: 0;
+
+      height: 4px;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--pink),
+          var(--gold),
+          var(--sky)
+        );
     }
 
-    .amount {
-      font-size: 28px;
+
+    .info-card {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,245,249,0.97),
+          rgba(241,250,255,0.97)
+        );
+    }
+
+
+    .section-icon {
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--pink-light),
+          var(--sky-light)
+        );
+
+      font-size: 24px;
+
+      margin-bottom: 12px;
+    }
+
+
+    h2 {
+      margin:
+        4px 0 17px;
+
+      color:
+        #4d5664;
+
+      font-size: 25px;
+    }
+
+
+    h3 {
+      color:
+        var(--pink-dark);
+
+      margin-top: 25px;
+    }
+
+
+    p {
+      line-height: 1.65;
+    }
+
+
+    /* =================================
+       EVENT INFORMATION
+       ================================= */
+
+    .info-box {
+      padding: 15px;
+
+      margin: 12px 0;
+
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff7fa,
+          #f4fbff
+        );
+
+      border:
+        1px solid rgba(121,201,237,0.20);
+    }
+
+
+    .info-label {
       font-weight: 800;
-      color: #a83218;
+
+      color:
+        var(--sky-dark);
     }
+
+
+    .deadline {
+      color:
+        var(--pink-dark);
+
+      font-weight: 850;
+    }
+
+
+    ul {
+      padding-left: 23px;
+
+      line-height: 1.9;
+    }
+
+
+    li::marker {
+      color:
+        var(--pink);
+    }
+
+
+    .contact-box {
+      padding: 16px;
+
+      border-radius: 15px;
+
+      background:
+        var(--sky-light);
+
+      border:
+        1px solid rgba(121,201,237,0.25);
+
+      line-height: 1.8;
+    }
+
+
+    /* =================================
+       FORM
+       ================================= */
 
     label {
       display: block;
-      font-weight: 700;
-      margin: 13px 0 6px;
+
+      margin:
+        14px 0 7px;
+
+      font-weight: 750;
+
+      color:
+        #515a66;
     }
+
 
     input,
     select {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #d9c9bc;
-      border-radius: 10px;
+
+      padding:
+        13px 14px;
+
+      border:
+        1px solid #ddd1d7;
+
+      border-radius: 12px;
+
+      background:
+        #fff;
+
+      color:
+        var(--text);
+
       font-size: 16px;
+
+      outline: none;
+
+      transition:
+        0.2s ease;
     }
+
+
+    input:focus,
+    select:focus {
+      border-color:
+        var(--sky-dark);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(121,201,237,0.16);
+    }
+
+
+    /* =================================
+       BUTTONS
+       ================================= */
 
     button {
       width: 100%;
-      padding: 13px;
+
+      padding:
+        14px 16px;
+
+      margin-top: 17px;
+
       border: 0;
-      border-radius: 10px;
-      background: #a83218;
+
+      border-radius: 12px;
+
       color: white;
-      font-weight: 800;
+
       font-size: 16px;
+
+      font-weight: 800;
+
       cursor: pointer;
-      margin-top: 16px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--pink-dark),
+          #d87498,
+          var(--sky-dark)
+        );
+
+      box-shadow:
+        0 8px 18px
+        rgba(201,95,134,0.18);
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease;
     }
+
+
+    button:hover {
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 11px 24px
+        rgba(201,95,134,0.23);
+    }
+
 
     button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+      opacity: .6;
+
+      cursor:
+        not-allowed;
+
+      transform:
+        none;
     }
 
+
+    /* =================================
+       PAYMENT
+       ================================= */
+
     .upi {
-      padding: 14px;
-      border: 1px dashed #c58a62;
-      border-radius: 12px;
-      background: #fffaf5;
-      margin: 14px 0;
+      padding: 18px;
+
+      margin: 18px 0;
+
+      border-radius: 17px;
+
+      border:
+        1px solid rgba(214,165,60,0.28);
+
+      background:
+        linear-gradient(
+          145deg,
+          #fff8e7,
+          #fffdf8
+        );
     }
+
+
+    .fee {
+      font-size: 21px;
+
+      font-weight: 850;
+
+      color:
+        var(--pink-dark);
+    }
+
+
+    .upi-id {
+      display: inline-block;
+
+      margin-top: 3px;
+
+      padding:
+        5px 10px;
+
+      border-radius: 7px;
+
+      background:
+        white;
+
+      color:
+        var(--sky-dark);
+
+      font-weight: 800;
+    }
+
 
     .qr {
       display: flex;
+
       justify-content: center;
-      margin: 12px 0;
+
+      margin: 16px 0;
+
+      padding: 10px;
     }
+
+
+    .qr canvas,
+    .qr img {
+      padding: 7px;
+
+      background: white;
+
+      border-radius: 13px;
+
+      box-shadow:
+        0 6px 20px
+        rgba(70,50,60,0.10);
+    }
+
 
     .small {
       font-size: 13px;
-      color: #6e5a4f;
+
+      color:
+        var(--muted);
+
+      line-height: 1.6;
     }
+
+
+    /* =================================
+       SUCCESS / ERROR
+       ================================= */
 
     .success {
       display: none;
-      padding: 14px;
-      border-radius: 10px;
-      background: #e9f7e9;
-      color: #185c24;
-      margin-top: 14px;
+
+      padding: 16px;
+
+      margin-top: 15px;
+
+      border-radius: 13px;
+
+      background:
+        #eefaf2;
+
+      color:
+        #21633c;
+
+      border:
+        1px solid #c7e7d1;
+
+      line-height: 1.65;
     }
+
 
     .error {
       display: none;
-      padding: 14px;
-      border-radius: 10px;
-      background: #fff0f0;
-      color: #8b1a1a;
-      margin-top: 14px;
+
+      padding: 16px;
+
+      margin-top: 15px;
+
+      border-radius: 13px;
+
+      background:
+        #fff0f3;
+
+      color:
+        #9b3030;
+
+      border:
+        1px solid #efc8d0;
     }
 
-    .status-box {
-      margin-top: 28px;
-      padding-top: 20px;
-      border-top: 2px solid #ead8ca;
+
+    /* =================================
+       STATUS
+       ================================= */
+
+    .status-area {
+      margin-top: 29px;
+
+      padding-top: 24px;
+
+      border-top:
+        1px solid #eadde2;
     }
+
+
+    .status-heading {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+    }
+
+
+    .status-heading-icon {
+      width: 38px;
+      height: 38px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 11px;
+
+      background:
+        var(--sky-light);
+    }
+
 
     #statusResult {
-      margin-top: 15px;
-      padding: 16px;
-      border-radius: 12px;
-      background: #fff8ee;
-      line-height: 1.7;
       display: none;
+
+      margin-top: 16px;
+
+      padding: 19px;
+
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #fffafd,
+          #f4fbff
+        );
+
+      border:
+        1px solid #e4dce1;
+
+      line-height: 1.7;
     }
+
 
     #receiptBtn {
       display: none;
-      background: #246b36;
+
+      background:
+        linear-gradient(
+          135deg,
+          #348a64,
+          #53a579
+        );
+
+      box-shadow:
+        0 8px 18px
+        rgba(52,138,100,0.18);
     }
 
-    .deadline {
-      font-weight: 800;
-      color: #9d2b13;
-    }
+
+    /* =================================
+       FOOTER
+       ================================= */
 
     footer {
+      position: relative;
+
+      overflow: hidden;
+
+      padding:
+        40px 20px 30px;
+
       text-align: center;
-      padding: 25px;
-      color: #725e50;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          #d9789d,
+          #cf7198 45%,
+          #71bddf 100%
+        );
+
+      box-shadow:
+        0 -8px 28px
+        rgba(80,60,70,0.08);
     }
 
+
+    footer::before {
+      content: "🪷";
+
+      position: absolute;
+
+      left: 7%;
+      top: 20px;
+
+      font-size: 42px;
+
+      opacity: .14;
+    }
+
+
+    footer::after {
+      content: "🪷";
+
+      position: absolute;
+
+      right: 7%;
+      bottom: 20px;
+
+      font-size: 42px;
+
+      opacity: .14;
+    }
+
+
+    .footer-feather {
+      font-size: 28px;
+
+      margin-bottom: 7px;
+    }
+
+
+    .footer-title {
+      margin: 0;
+
+      color: white;
+
+      font-size: 22px;
+
+      font-weight: 850;
+    }
+
+
+    .footer-subtitle {
+      margin:
+        8px 0 20px;
+
+      opacity: .92;
+
+      font-size: 14px;
+
+      line-height: 1.6;
+    }
+
+
+    .footer-line {
+      width:
+        min(350px, 80%);
+
+      height: 1px;
+
+      margin:
+        0 auto 18px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.8),
+          transparent
+        );
+    }
+
+
+    .footer-copy {
+      margin: 4px 0;
+
+      font-size: 13px;
+
+      opacity: .84;
+    }
+
+
+    /* =================================
+       MOBILE
+       ================================= */
+
     @media (max-width: 760px) {
+
+      header {
+        padding:
+          28px 15px 38px;
+      }
+
+
+      .logo-container {
+        width: 94px;
+        height: 94px;
+      }
+
+
+      header h1 {
+        font-size: 30px;
+      }
+
+
+      .pill {
+        font-size: 13px;
+      }
+
+
       main {
         grid-template-columns: 1fr;
+
+        margin-top: 22px;
+
+        padding:
+          0 12px 25px;
       }
+
+
+      .card {
+        padding: 21px;
+
+        border-radius: 18px;
+      }
+
+
+      footer {
+        padding:
+          34px 18px 26px;
+      }
+
     }
+
   </style>
 </head>
 
+
 <body>
 
-<header>
 
-  <img
-    src="rayagada-logo.png"
-    alt="ISKCON Rayagada logo"
-  >
+  <!-- =================================
+       HEADER
+       ================================= -->
 
-  <h1>
-    Krishna Janmashtami Cultural Contest 2026
-  </h1>
+  <header>
 
-  <p class="sub">
-    03 & 04 September 2026 • Registration ₹40
-  </p>
+    <div class="hero">
 
-  <p class="sub">
-    Organizer: ISKCON Rayagada<br>
-    Event Coordinator: HG Sachinandan Kirtan Das
-  </p>
+      <!-- ISKCON LOGO YOU PROVIDED -->
 
-</header>
+      <div class="logo-container">
 
-
-<main>
-
-  <!-- EVENT INFORMATION -->
-
-  <section class="card info">
-
-    <h2>Event Information</h2>
-
-    <p>
-      <strong>Date:</strong>
-      03 & 04 September 2026
-    </p>
-
-    <p>
-      <strong>Registration deadline:</strong>
-      <span class="deadline">
-        30 August 2026
-      </span>
-    </p>
-
-    <p>
-      <strong>Venue:</strong>
-      ISKCON Rayagada, Indira Nagar 5th Lane,
-      765001, Near UP School, Rayagada
-    </p>
-
-    <h3>Competitions</h3>
-
-    <ul>
-      <li>Krishna Vesa Competition</li>
-      <li>Bhagavad Gita Shloka Recitation</li>
-      <li>Krishna Song / Bhajan Singing</li>
-      <li>Dance Event on Krishna's Song</li>
-      <li>Krishna Drawing Competition</li>
-    </ul>
-
-    <h3>Contact</h3>
-
-    <p>
-      📞 <strong>6297209829</strong><br>
-      💬 WhatsApp: <strong>6297209829</strong><br>
-      ✉️ <strong>purposexyz3@gmail.com</strong>
-    </p>
-
-  </section>
-
-
-  <!-- REGISTRATION -->
-
-  <section class="card">
-
-    <h2>Participant Registration</h2>
-
-    <form id="registrationForm">
-
-      <label for="name">
-        Participant name
-      </label>
-
-      <input
-        id="name"
-        required
-        maxlength="100"
-      >
-
-
-      <label for="className">
-        Class / age group
-      </label>
-
-      <input
-        id="className"
-        required
-        maxlength="50"
-      >
-
-
-      <label for="institution">
-        School / institution
-      </label>
-
-      <input
-        id="institution"
-        required
-        maxlength="150"
-      >
-
-
-      <label for="contact">
-        10-digit mobile number
-      </label>
-
-      <input
-        id="contact"
-        inputmode="numeric"
-        pattern="[0-9]{10}"
-        maxlength="10"
-        required
-      >
-
-
-      <label for="email">
-        Email
-      </label>
-
-      <input
-        id="email"
-        type="email"
-        placeholder="example@gmail.com"
-        required
-      >
-
-
-      <label for="event">
-        Competition
-      </label>
-
-      <select id="event" required>
-
-        <option value="">
-          Select competition
-        </option>
-
-        <option>
-          Krishna Vesa Competition
-        </option>
-
-        <option>
-          Bhagavad Gita Shloka Recitation
-        </option>
-
-        <option>
-          Krishna Song / Bhajan Singing
-        </option>
-
-        <option>
-          Dance Event on Krishna's Song
-        </option>
-
-        <option>
-          Krishna Drawing Competition
-        </option>
-
-      </select>
-
-
-      <!-- PAYMENT -->
-
-      <div class="upi">
-
-        <strong>
-          Registration fee: ₹40
-        </strong>
-
-        <p>
-          Pay ₹40 by UPI to
-          <strong>9437460784@ybl</strong>.
-        </p>
-
-        <div
-          class="qr"
-          id="qrcode"
-        ></div>
-
-
-        <a
-          id="payLink"
-          href="#"
-          target="_blank"
-          rel="noopener"
+        <img
+          src="rayagada-logo.png"
+          alt="ISKCON Rayagada Logo"
         >
-
-          <button
-            type="button"
-          >
-            Pay ₹40 by UPI
-          </button>
-
-        </a>
-
-
-        <p class="small">
-          After payment, submit this registration.
-          An admin will verify the payment and mark
-          the registration PAID.
-        </p>
 
       </div>
 
 
-      <button
-        id="submitBtn"
-        type="submit"
-      >
-        Submit Registration
-      </button>
+      <div class="feather">
+        🦚
+      </div>
 
 
-      <div
-        class="success"
-        id="success"
-      ></div>
+      <h1>
+        Krishna Janmashtami
+        <br>
+        Cultural Contest 2026
+      </h1>
 
 
-      <div
-        class="error"
-        id="error"
-      ></div>
-
-    </form>
+      <p class="subtitle">
+        Celebrating the Divine Appearance of
+        Lord Sri Krishna
+      </p>
 
 
-    <!-- PAYMENT STATUS -->
+      <div class="event-pills">
 
-    <div class="status-box">
+        <span class="pill">
+          🪷 ISKCON Rayagada
+        </span>
 
-      <h2>
-        Check Payment Status
-      </h2>
+        <span class="pill">
+          📅 03 & 04 September 2026
+        </span>
 
-      <label for="statusRegistrationId">
-        Registration ID
-      </label>
+        <span class="pill">
+          ₹40 Registration
+        </span>
 
-      <input
-        id="statusRegistrationId"
-        placeholder="Example: KJC2026-XXXXXXXX"
-      >
-
-
-      <button
-        id="statusBtn"
-        type="button"
-        onclick="checkPaymentStatus()"
-      >
-        Check Payment Status
-      </button>
+      </div>
 
 
-      <!-- IMPORTANT:
-           This is the element used by the status function
-           and the receipt function.
-      -->
-
-      <div id="statusResult"></div>
-
-
-      <!-- RECEIPT BUTTON -->
-
-      <button
-        id="receiptBtn"
-        type="button"
-        onclick="printRegistrationReceipt()"
-        style="display:none;"
-      >
-        🧾 Print / Save Receipt
-      </button>
+      <div class="gold-line"></div>
 
     </div>
 
-  </section>
-
-</main>
+  </header>
 
 
-<footer>
-  ISKCON Rayagada • Krishna Janmashtami 2026
-</footer>
+  <!-- =================================
+       MAIN
+       ================================= -->
+
+  <main>
 
 
-<!-- SUPABASE -->
+    <!-- =================================
+         EVENT INFORMATION
+         ================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <section class="card info-card">
 
-
-<!-- QR CODE -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-
-<!-- YOUR CONFIG -->
-
-<script src="config.js"></script>
-
-<script src="supabase_client.js?v=2"></script>
+      <div class="section-icon">
+        🪷
+      </div>
 
 
-<script>
-
-  /* =========================
-     UPI PAYMENT
-     ========================= */
-
-  const upi =
-    "upi://pay?pa=" +
-    encodeURIComponent(EVENT_CONFIG.upiId) +
-    "&pn=" +
-    encodeURIComponent("ISKCON Rayagada") +
-    "&am=" +
-    EVENT_CONFIG.amount +
-    "&cu=INR";
+      <h2>
+        Event Information
+      </h2>
 
 
-  document.getElementById("payLink").href = upi;
+      <div class="info-box">
+
+        <span class="info-label">
+          📅 Event Date
+        </span>
+
+        <br>
+
+        03 & 04 September 2026
+
+      </div>
 
 
-  new QRCode(
-    document.getElementById("qrcode"),
-    {
-      text: upi,
-      width: 170,
-      height: 170
-    }
-  );
+      <div class="info-box">
+
+        <span class="info-label">
+          ⏰ Registration Deadline
+        </span>
+
+        <br>
+
+        <span class="deadline">
+          30 August 2026
+        </span>
+
+      </div>
 
 
-  /* =========================
-     REGISTRATION
-     ========================= */
+      <div class="info-box">
 
-  const form =
-    document.getElementById("registrationForm");
+        <span class="info-label">
+          🛕 Venue
+        </span>
 
-  const success =
-    document.getElementById("success");
+        <br>
 
-  const error =
-    document.getElementById("error");
+        ISKCON Rayagada,
+        Indira Nagar 5th Lane,
+        765001,
+        Near UP School, Rayagada
 
-  const btn =
-    document.getElementById("submitBtn");
+      </div>
 
 
-  form.addEventListener(
-    "submit",
-    async (e) => {
+      <h3>
+        🦚 Competitions
+      </h3>
 
-      e.preventDefault();
 
-      success.style.display = "none";
-      error.style.display = "none";
+      <ul>
 
-      btn.disabled = true;
-      btn.textContent = "Submitting...";
+        <li>
+          Krishna Vesa Competition
+        </li>
+
+        <li>
+          Bhagavad Gita Shloka Recitation
+        </li>
+
+        <li>
+          Krishna Song / Bhajan Singing
+        </li>
+
+        <li>
+          Dance Event on Krishna's Song
+        </li>
+
+        <li>
+          Krishna Drawing Competition
+        </li>
+
+      </ul>
+
+
+      <h3>
+        📞 Contact
+      </h3>
+
+
+      <div class="contact-box">
+
+        📞 <strong>6297209829</strong>
+        <br>
+
+        💬 WhatsApp:
+        <strong>6297209829</strong>
+        <br>
+
+        ✉️
+        <strong>purposexyz3@gmail.com</strong>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================
+         REGISTRATION
+         ================================= -->
+
+    <section class="card">
+
+      <div class="section-icon">
+        🪈
+      </div>
+
+
+      <h2>
+        Participant Registration
+      </h2>
+
+
+      <form id="registrationForm">
+
+
+        <label for="name">
+          Participant Name
+        </label>
+
+        <input
+          id="name"
+          required
+          maxlength="100"
+          placeholder="Enter participant name"
+        >
+
+
+        <label for="className">
+          Class / Age Group
+        </label>
+
+        <input
+          id="className"
+          required
+          maxlength="50"
+          placeholder="Example: Class 6 / Age 12"
+        >
+
+
+        <label for="institution">
+          School / Institution
+        </label>
+
+        <input
+          id="institution"
+          required
+          maxlength="150"
+          placeholder="Enter school or institution"
+        >
+
+
+        <label for="contact">
+          10-digit Mobile Number
+        </label>
+
+        <input
+          id="contact"
+          inputmode="numeric"
+          pattern="[0-9]{10}"
+          maxlength="10"
+          required
+          placeholder="Enter mobile number"
+        >
+
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          placeholder="example@gmail.com"
+          required
+        >
+
+
+        <label for="event">
+          Competition
+        </label>
+
+        <select
+          id="event"
+          required
+        >
+
+          <option value="">
+            Select competition
+          </option>
+
+          <option>
+            Krishna Vesa Competition
+          </option>
+
+          <option>
+            Bhagavad Gita Shloka Recitation
+          </option>
+
+          <option>
+            Krishna Song / Bhajan Singing
+          </option>
+
+          <option>
+            Dance Event on Krishna's Song
+          </option>
+
+          <option>
+            Krishna Drawing Competition
+          </option>
+
+        </select>
+
+
+        <!-- =================================
+             PAYMENT
+             ================================= -->
+
+        <div class="upi">
+
+          <div class="fee">
+            Registration Fee: ₹40
+          </div>
+
+
+          <p>
+
+            Pay ₹40 by UPI to:
+
+            <br>
+
+            <span class="upi-id">
+              9437460784@ybl
+            </span>
+
+          </p>
+
+
+          <div
+            class="qr"
+            id="qrcode"
+          ></div>
+
+
+          <a
+            id="payLink"
+            href="#"
+            target="_blank"
+            rel="noopener"
+          >
+
+            <button
+              type="button"
+            >
+              💳 Pay ₹40 by UPI
+            </button>
+
+          </a>
+
+
+          <p class="small">
+
+            After payment, submit this registration.
+            Your payment will be verified by the admin.
+
+          </p>
+
+        </div>
+
+
+        <button
+          id="submitBtn"
+          type="submit"
+        >
+          🪷 Submit Registration
+        </button>
+
+
+        <div
+          class="success"
+          id="success"
+        ></div>
+
+
+        <div
+          class="error"
+          id="error"
+        ></div>
+
+      </form>
+
+
+      <!-- =================================
+           STATUS CHECK
+           ================================= -->
+
+      <div class="status-area">
+
+        <div class="status-heading">
+
+          <div class="status-heading-icon">
+            🔎
+          </div>
+
+          <h2 style="margin:0;">
+            Check Payment Status
+          </h2>
+
+        </div>
+
+
+        <label for="statusRegistrationId">
+          Registration ID
+        </label>
+
+
+        <input
+          type="text"
+          id="statusRegistrationId"
+          placeholder="Example: KJC2026-XXXXXXXX"
+        >
+
+
+        <button
+          type="button"
+          onclick="checkPaymentStatus()"
+        >
+          🔍 Check Payment Status
+        </button>
+
+
+        <!-- REQUIRED BY RECEIPT FUNCTION -->
+
+        <div
+          id="statusResult"
+        ></div>
+
+
+        <!-- RECEIPT BUTTON -->
+
+        <button
+          id="receiptBtn"
+          type="button"
+          onclick="printRegistrationReceipt()"
+          style="display:none;"
+        >
+          🧾 Print / Save Receipt
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =================================
+       FOOTER
+       ================================= -->
+
+  <footer>
+
+    <div class="footer-feather">
+      🦚
+    </div>
+
+
+    <p class="footer-title">
+      Hare Krishna 🙏
+    </p>
+
+
+    <p class="footer-subtitle">
+
+      Krishna Janmashtami Cultural Contest 2026
+
+      <br>
+
+      Organized by ISKCON Rayagada
+
+    </p>
+
+
+    <div class="footer-line"></div>
+
+
+    <p class="footer-copy">
+      📅 03 & 04 September 2026
+    </p>
+
+
+    <p class="footer-copy">
+      🛕 ISKCON Rayagada
+    </p>
+
+
+    <p class="footer-copy">
+      © 2026 ISKCON Rayagada
+    </p>
+
+  </footer>
+
+
+  <!-- =================================
+       SUPABASE
+       ================================= -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+  <!-- =================================
+       QR CODE
+       ================================= -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
+  <!-- =================================
+       YOUR EXISTING CONFIG
+       ================================= -->
+
+  <script src="config.js"></script>
+
+  <script src="supabase_client.js?v=2"></script>
+
+
+  <script>
+
+    /* =================================
+       UPI QR
+       ================================= */
+
+    const upi =
+      "upi://pay?pa=" +
+      encodeURIComponent(EVENT_CONFIG.upiId) +
+      "&pn=" +
+      encodeURIComponent("ISKCON Rayagada") +
+      "&am=" +
+      EVENT_CONFIG.amount +
+      "&cu=INR";
+
+
+    document.getElementById(
+      "payLink"
+    ).href = upi;
+
+
+    new QRCode(
+      document.getElementById("qrcode"),
+      {
+        text: upi,
+        width: 170,
+        height: 170
+      }
+    );
+
+
+    /* =================================
+       REGISTRATION
+       ================================= */
+
+    const form =
+      document.getElementById(
+        "registrationForm"
+      );
+
+
+    const success =
+      document.getElementById(
+        "success"
+      );
+
+
+    const error =
+      document.getElementById(
+        "error"
+      );
+
+
+    const btn =
+      document.getElementById(
+        "submitBtn"
+      );
+
+
+    form.addEventListener(
+      "submit",
+      async (e) => {
+
+        e.preventDefault();
+
+
+        success.style.display =
+          "none";
+
+
+        error.style.display =
+          "none";
+
+
+        btn.disabled =
+          true;
+
+
+        btn.textContent =
+          "Submitting...";
+
+
+        try {
+
+          const registrationId =
+            await window.createRegistration({
+
+              name:
+                document
+                  .getElementById("name")
+                  .value
+                  .trim(),
+
+              className:
+                document
+                  .getElementById("className")
+                  .value
+                  .trim(),
+
+              institution:
+                document
+                  .getElementById("institution")
+                  .value
+                  .trim(),
+
+              contact:
+                document
+                  .getElementById("contact")
+                  .value
+                  .trim(),
+
+              email:
+                document
+                  .getElementById("email")
+                  .value
+                  .trim(),
+
+              event:
+                document
+                  .getElementById("event")
+                  .value
+
+            });
+
+
+          success.innerHTML =
+
+            "🙏 Registration received successfully!<br><br>" +
+
+            "<strong>Your Registration ID:</strong><br>" +
+
+            "<span style='font-size:23px;font-weight:900;color:#c95f86'>" +
+
+            registrationId +
+
+            "</span><br><br>" +
+
+            "Please save this Registration ID.";
+
+          success.style.display =
+            "block";
+
+
+          document
+            .getElementById(
+              "statusRegistrationId"
+            )
+            .value =
+            registrationId;
+
+
+          form.reset();
+
+
+          document
+            .getElementById(
+              "statusRegistrationId"
+            )
+            .value =
+            registrationId;
+
+
+        } catch (err) {
+
+          console.error(err);
+
+
+          error.textContent =
+            err.message ||
+            "Registration failed. Please try again.";
+
+
+          error.style.display =
+            "block";
+
+
+        } finally {
+
+          btn.disabled =
+            false;
+
+
+          btn.textContent =
+            "🪷 Submit Registration";
+
+        }
+
+      }
+    );
+
+
+    /* =================================
+       CHECK PAYMENT STATUS
+       ================================= */
+
+    async function checkPaymentStatus() {
+
+      const registrationId =
+        document
+          .getElementById(
+            "statusRegistrationId"
+          )
+          .value
+          .trim();
+
+
+      const result =
+        document.getElementById(
+          "statusResult"
+        );
+
+
+      const receiptBtn =
+        document.getElementById(
+          "receiptBtn"
+        );
+
+
+      receiptBtn.style.display =
+        "none";
+
+
+      if (!registrationId) {
+
+        result.innerHTML = `
+          <div style="
+            text-align:center;
+            color:#bd4141;
+            font-weight:800;
+          ">
+            Please enter your Registration ID.
+          </div>
+        `;
+
+        result.style.display =
+          "block";
+
+        return;
+      }
+
+
+      result.innerHTML = `
+        <div style="
+          text-align:center;
+          color:#398fbd;
+          font-weight:800;
+        ">
+          🔄 Checking registration...
+        </div>
+      `;
+
+
+      result.style.display =
+        "block";
 
 
       try {
 
-        const registrationId =
-          await window.createRegistration({
-
-            name:
-              document
-                .getElementById("name")
-                .value
-                .trim(),
-
-            className:
-              document
-                .getElementById("className")
-                .value
-                .trim(),
-
-            institution:
-              document
-                .getElementById("institution")
-                .value
-                .trim(),
-
-            contact:
-              document
-                .getElementById("contact")
-                .value
-                .trim(),
-
-            email:
-              document
-                .getElementById("email")
-                .value
-                .trim(),
-
-            event:
-              document
-                .getElementById("event")
-                .value
-
-          });
+        const {
+          data,
+          error
+        } =
+          await window.supabaseClient.rpc(
+            "check_registration_status",
+            {
+              p_registration_id:
+                registrationId
+            }
+          );
 
 
-        success.innerHTML =
-          "Registration received successfully!<br><br>" +
+        if (error) {
 
-          "<strong>Your Registration ID:</strong><br>" +
-
-          "<span style='font-size:22px'>" +
-
-          registrationId +
-
-          "</span><br><br>" +
-
-          "Please save this Registration ID. " +
-
-          "You will need it to check your payment status.";
+          console.error(
+            "Status error:",
+            error
+          );
 
 
-        success.style.display = "block";
+          result.innerHTML = `
+            <div style="
+              color:#bd4141;
+              font-weight:700;
+            ">
+              Unable to check registration.
+              Please try again.
+            </div>
+          `;
+
+          return;
+        }
 
 
-        /*
-          Automatically put the new ID
-          into the status box.
-        */
+        if (
+          !data ||
+          data.length === 0
+        ) {
 
-        document
-          .getElementById("statusRegistrationId")
-          .value = registrationId;
+          result.innerHTML = `
+            <div style="
+              text-align:center;
+              color:#bd4141;
+              font-weight:850;
+              padding:5px;
+            ">
+              ❌ Registration ID not found.
+            </div>
+          `;
+
+          return;
+        }
 
 
-        form.reset();
+        const r =
+          data[0];
+
+
+        let statusText = "";
+
+        let statusColor =
+          "#b47a0b";
+
+
+        if (
+          r.payment_status ===
+          "PAID"
+        ) {
+
+          statusText =
+            "🟢 PAID – Payment verified";
+
+          statusColor =
+            "#27845c";
+
+        }
+
+        else if (
+          r.payment_status ===
+          "REJECTED"
+        ) {
+
+          statusText =
+            "🔴 REJECTED – Please contact the Event Coordinator.";
+
+          statusColor =
+            "#bd4141";
+
+        }
+
+        else {
+
+          statusText =
+            "🟡 PENDING – Payment verification in progress.";
+
+          statusColor =
+            "#a16c08";
+
+        }
+
+
+        result.innerHTML = `
+
+          <h3 style="
+            margin-top:0;
+            color:#c95f86;
+          ">
+            Registration Details
+          </h3>
+
+
+          <p>
+            <strong>Registration ID:</strong>
+            ${r.registration_id}
+          </p>
+
+
+          <p>
+            <strong>Payment Status:</strong>
+          </p>
+
+
+          <div style="
+            padding:13px;
+            margin-bottom:16px;
+            border-radius:12px;
+            background:white;
+            border:1px solid #eadde2;
+            color:${statusColor};
+            font-size:18px;
+            font-weight:850;
+            text-align:center;
+          ">
+            ${statusText}
+          </div>
+
+        `;
+
+
+        receiptBtn.style.display =
+          "block";
 
 
       } catch (err) {
 
         console.error(err);
 
-        error.textContent =
-          err.message ||
-          "Registration failed. Please try again.";
 
-        error.style.display = "block";
-
-      } finally {
-
-        btn.disabled = false;
-
-        btn.textContent =
-          "Submit Registration";
+        result.innerHTML = `
+          <div style="
+            color:#bd4141;
+            font-weight:700;
+          ">
+            Unable to check registration.
+            Please try again.
+          </div>
+        `;
 
       }
 
     }
-  );
 
 
-  /* =========================
-     CHECK PAYMENT STATUS
-     ========================= */
+    /* =================================
+       PRINT RECEIPT
+       ================================= */
 
-  async function checkPaymentStatus() {
+    function printRegistrationReceipt() {
 
-    const registrationId =
-      document
-        .getElementById("statusRegistrationId")
-        .value
-        .trim();
-
-
-    const result =
-      document.getElementById("statusResult");
-
-
-    const receiptBtn =
-      document.getElementById("receiptBtn");
-
-
-    receiptBtn.style.display = "none";
-
-
-    if (!registrationId) {
-
-      result.innerHTML =
-        "Please enter your Registration ID.";
-
-      result.style.display = "block";
-
-      return;
-    }
-
-
-    result.innerHTML =
-      "Checking...";
-
-    result.style.display = "block";
-
-
-    try {
-
-      /*
-        This calls the Supabase function
-        created for public registration-status checking.
-      */
-
-      const {
-        data,
-        error
-      } =
-        await window.supabaseClient.rpc(
-          "check_registration_details",
-          {
-            p_registration_id:
-              registrationId
-          }
+      const details =
+        document.getElementById(
+          "statusResult"
         );
-
-
-      if (error) {
-
-        console.error(
-          "Status error:",
-          error
-        );
-
-        result.innerHTML =
-          "Unable to check registration. Please try again.";
-
-        return;
-      }
-
-
-      if (!data || data.length === 0) {
-
-        result.innerHTML =
-          "Registration ID not found.";
-
-        return;
-      }
-
-
-      const r = data[0];
-
-
-      let statusText = "";
 
 
       if (
-        r.payment_status === "PAID"
+        !details ||
+        !details.innerText.trim()
       ) {
 
-        statusText =
-          "🟢 PAID – Payment verified";
+        alert(
+          "Please check your Registration ID first."
+        );
 
-      }
-
-      else if (
-        r.payment_status === "REJECTED"
-      ) {
-
-        statusText =
-          "🔴 REJECTED – Please contact the Event Coordinator.";
-
-      }
-
-      else {
-
-        statusText =
-          "🟡 PENDING – Payment is waiting for verification.";
-
+        return;
       }
 
 
-      result.innerHTML = `
+      const receiptWindow =
+        window.open(
+          "",
+          "_blank",
+          "width=800,height=900"
+        );
 
-        <h3
-          style="
-            margin-top:0;
-            color:#7a1f16;
-          "
-        >
-          Registration Details
-        </h3>
 
+      if (!receiptWindow) {
 
-        <p>
-          <strong>Registration ID:</strong>
-          ${r.registration_id}
-        </p>
+        alert(
+          "Please allow pop-ups for this website."
+        );
 
+        return;
+      }
 
-        <p>
-          <strong>Participant:</strong>
-          ${r.participant_name}
-        </p>
 
+      receiptWindow.document.write(`
 
-        <p>
-          <strong>Class:</strong>
-          ${r.class_name}
-        </p>
+        <!DOCTYPE html>
 
+        <html>
 
-        <p>
-          <strong>Institution:</strong>
-          ${r.institution}
-        </p>
+        <head>
 
+          <meta charset="UTF-8">
 
-        <p>
-          <strong>Competition:</strong>
-          ${r.event_name}
-        </p>
+          <title>
+            Registration Receipt - ISKCON Rayagada
+          </title>
 
 
-        <p>
-          <strong>Amount:</strong>
-          ₹${r.amount}
-        </p>
+          <style>
 
-
-        <p
-          style="
-            font-size:18px;
-            font-weight:800;
-            margin-bottom:0;
-          "
-        >
-          ${statusText}
-        </p>
-
-      `;
-
-
-      /*
-        Show receipt button after
-        successful status lookup.
-      */
-
-      receiptBtn.style.display = "block";
-
-
-    } catch (err) {
-
-      console.error(err);
-
-      result.innerHTML =
-        "Unable to check registration. Please try again.";
-
-    }
-
-  }
-
-
-  /* =========================
-     PRINT REGISTRATION RECEIPT
-     ========================= */
-
-  function printRegistrationReceipt() {
-
-    const details =
-      document.getElementById(
-        "statusResult"
-      );
-
-
-    if (
-      !details ||
-      !details.innerText.trim()
-    ) {
-
-      alert(
-        "Please check your Registration ID first."
-      );
-
-      return;
-    }
-
-
-    const receiptWindow =
-      window.open(
-        "",
-        "_blank",
-        "width=800,height=900"
-      );
-
-
-    if (!receiptWindow) {
-
-      alert(
-        "Please allow pop-ups for this website to print the receipt."
-      );
-
-      return;
-    }
-
-
-    receiptWindow.document.write(`
-
-      <!DOCTYPE html>
-
-      <html>
-
-      <head>
-
-        <title>
-          Registration Receipt - ISKCON Rayagada
-        </title>
-
-
-        <style>
-
-          body {
-
-            font-family:
-              Arial,
-              sans-serif;
-
-            padding:40px;
-
-            color:#27150d;
-
-            background:#fff8ee;
-
-          }
-
-
-          .receipt {
-
-            max-width:650px;
-
-            margin:auto;
-
-            border:
-              2px solid #7a1f16;
-
-            border-radius:16px;
-
-            padding:30px;
-
-            background:white;
-
-          }
-
-
-          h1 {
-
-            color:#7a1f16;
-
-            text-align:center;
-
-            margin-bottom:8px;
-
-          }
-
-
-          h2 {
-
-            text-align:center;
-
-            margin-top:0;
-
-          }
-
-
-          .details {
-
-            margin-top:25px;
-
-            font-size:17px;
-
-            line-height:1.8;
-
-          }
-
-
-          .footer {
-
-            margin-top:30px;
-
-            text-align:center;
-
-            font-size:13px;
-
-            color:#666;
-
-          }
-
-
-          .print-button {
-
-            display:block;
-
-            width:100%;
-
-            padding:13px;
-
-            margin-top:25px;
-
-            border:0;
-
-            border-radius:10px;
-
-            background:#7a1f16;
-
-            color:white;
-
-            font-weight:bold;
-
-            font-size:16px;
-
-            cursor:pointer;
-
-          }
-
-
-          @media print {
-
-            .print-button {
-
-              display:none;
-
+            * {
+              box-sizing:border-box;
             }
+
 
             body {
 
-              background:white;
+              margin:0;
+
+              padding:40px;
+
+              font-family:
+                Arial,
+                sans-serif;
+
+              color:#44313a;
+
+              background:#fff8fb;
 
             }
 
-          }
 
-        </style>
+            .receipt {
 
-      </head>
+              max-width:680px;
 
+              margin:auto;
 
-      <body>
+              padding:34px;
 
+              background:white;
 
-        <div class="receipt">
+              border:
+                2px solid #e989a9;
 
+              border-radius:20px;
 
-          <h1>
-            ISKCON Rayagada
-          </h1>
+              box-shadow:
+                0 10px 30px
+                rgba(80,60,70,.12);
 
-
-          <h2>
-            Krishna Janmashtami Cultural Contest 2026
-          </h2>
-
-
-          <div class="details">
-
-            ${details.innerHTML}
-
-          </div>
+            }
 
 
-          <div class="footer">
+            .top {
 
-            <p>
+              text-align:center;
+
+              padding-bottom:20px;
+
+              border-bottom:
+                1px solid #eadde2;
+
+            }
+
+
+            .logo {
+
+              width:80px;
+
+              height:80px;
+
+              object-fit:contain;
+
+              border-radius:50%;
+
+              padding:5px;
+
+              border:
+                2px solid #d6a53c;
+
+            }
+
+
+            h1 {
+
+              margin:
+                12px 0 5px;
+
+              color:#c95f86;
+
+              font-size:29px;
+
+            }
+
+
+            h2 {
+
+              margin:0;
+
+              color:#398fbd;
+
+              font-size:17px;
+
+            }
+
+
+            .details {
+
+              margin-top:25px;
+
+              padding:20px;
+
+              border-radius:14px;
+
+              background:
+                linear-gradient(
+                  145deg,
+                  #fff4f8,
+                  #effaff
+                );
+
+              line-height:1.8;
+
+              font-size:16px;
+
+            }
+
+
+            .footer {
+
+              margin-top:25px;
+
+              padding-top:20px;
+
+              border-top:
+                1px solid #eadde2;
+
+              text-align:center;
+
+              color:#75666d;
+
+              font-size:13px;
+
+              line-height:1.6;
+
+            }
+
+
+            .print-button {
+
+              display:block;
+
+              width:100%;
+
+              margin-top:22px;
+
+              padding:14px;
+
+              border:0;
+
+              border-radius:10px;
+
+              background:
+                linear-gradient(
+                  135deg,
+                  #c95f86,
+                  #398fbd
+                );
+
+              color:white;
+
+              font-size:16px;
+
+              font-weight:bold;
+
+              cursor:pointer;
+
+            }
+
+
+            @media print {
+
+              body {
+
+                padding:0;
+
+                background:white;
+
+              }
+
+
+              .receipt {
+
+                box-shadow:none;
+
+              }
+
+
+              .print-button {
+
+                display:none;
+
+              }
+
+            }
+
+          </style>
+
+        </head>
+
+
+        <body>
+
+          <div class="receipt">
+
+
+            <div class="top">
+
+              <img
+                class="logo"
+                src="rayagada-logo.png"
+                alt="ISKCON Rayagada"
+              >
+
+
+              <div style="
+                font-size:25px;
+                margin-top:8px;
+              ">
+                🦚
+              </div>
+
+
+              <h1>
+                ISKCON Rayagada
+              </h1>
+
+
+              <h2>
+                Krishna Janmashtami Cultural Contest 2026
+              </h2>
+
+            </div>
+
+
+            <div class="details">
+
+              ${details.innerHTML}
+
+            </div>
+
+
+            <div class="footer">
+
               <strong>
                 03 & 04 September 2026
               </strong>
-            </p>
 
-            <p>
-              Please keep this receipt for the event.
-            </p>
+              <br>
 
-            <p>
               ISKCON Rayagada
-            </p>
+
+              <br><br>
+
+              Please keep this receipt
+              for the event.
+
+              <br><br>
+
+              Hare Krishna 🙏
+
+            </div>
+
+
+            <button
+              class="print-button"
+              onclick="window.print()"
+            >
+              🖨️ Print / Save Receipt
+            </button>
+
 
           </div>
 
+        </body>
 
-          <button
-            class="print-button"
-            onclick="window.print()"
-          >
-            🖨️ Print / Save Receipt
-          </button>
+        </html>
+
+      `);
 
 
-        </div>
+      receiptWindow.document.close();
 
 
-      </body>
+      setTimeout(
+        () => {
+          receiptWindow.focus();
+        },
+        300
+      );
 
-      </html>
+    }
 
-    `);
-
-
-    receiptWindow.document.close();
-
-
-    /*
-      Give the new window time to render
-      before opening the print dialog.
-    */
-
-    setTimeout(
-      () => {
-
-        receiptWindow.focus();
-
-      },
-      300
-    );
-
-  }
-
-</script>
-
+  </script>
 
 </body>
+
 </html>
 ```
