@@ -167,7 +167,7 @@
   result.textContent = "Checking...";
 
   try {
-    const { data, error } = await supabaseClient
+    const { data, error } = await window,supabaseClient
       .rpc("check_registration_status", {
         p_registration_id: registrationId
       });
