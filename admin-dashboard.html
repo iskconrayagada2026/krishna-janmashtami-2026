@@ -34,7 +34,52 @@
     th { background: #7a1616; color: white; }
     @media (max-width: 800px) { .cards { grid-template-columns: repeat(2, 1fr); } body { padding: 12px; } }
     @media (max-width: 480px) { .toolbar input, .toolbar select { min-width: 100%; } }
-  </style>
+  
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 1000;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .modal {
+      background: white;
+      max-width: 700px;
+      margin: 5vh auto;
+      border-radius: 12px;
+      padding: 22px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .modal-header h2 { margin: 0; color: #7a1616; }
+    .close-btn { background: #777; color: white; }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .detail-item {
+      background: #f7f7f7;
+      border-radius: 7px;
+      padding: 10px;
+    }
+    .detail-item strong { display: block; color: #666; font-size: 12px; margin-bottom: 4px; }
+    .view-btn { background: #0d6efd; color: white; }
+    .resend-btn { background: #6f42c1; color: white; }
+    @media (max-width: 600px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
 </head>
 
 <body>
@@ -87,12 +132,26 @@
         <th>Event</th>
         <th>Amount</th>
         <th>Payment Status</th>
-        <th>Action</th>
+        <th>Admin Actions</th>
       </tr>
     </thead>
 
     <tbody></tbody>
   </table>
+  </div>
+
+
+  <div id="detailsModal" class="modal-backdrop" onclick="if(event.target===this) closeDetails()">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Registration Details</h2>
+        <button class="close-btn" onclick="closeDetails()">Close</button>
+      </div>
+      <div id="detailsContent"></div>
+      <div style="margin-top:16px">
+        <button id="modalResendBtn" class="resend-btn">📧 Resend Email</button>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -225,6 +284,95 @@
       exportRows(filteredRegistrations(), "registrations_current_view.xlsx");
     }
 
+
+    function valueOrDash(value) {
+      return value === null || value === undefined || value === "" ? "—" : value;
+    }
+
+    function showDetails(registrationId) {
+      const row = allRegistrations.find(r => String(r.registration_id) === String(registrationId));
+      if (!row) {
+        alert("Registration not found.");
+        return;
+      }
+
+      const preferredOrder = [
+        "registration_id", "participant_name", "class_name", "institution",
+        "contact_number", "email", "event_name", "amount", "payment_status", "created_at"
+      ];
+
+      const labels = {
+        registration_id: "Registration ID",
+        participant_name: "Participant Name",
+        class_name: "Class",
+        institution: "Institution",
+        contact_number: "Contact Number",
+        email: "Email",
+        event_name: "Competition",
+        amount: "Amount",
+        payment_status: "Payment Status",
+        created_at: "Registration Date"
+      };
+
+      const keys = [...preferredOrder, ...Object.keys(row).filter(k => !preferredOrder.includes(k))];
+
+      document.getElementById("detailsContent").innerHTML = `
+        <div class="detail-grid">
+          ${keys.map(key => {
+            let value = valueOrDash(row[key]);
+            if (key === "amount" && value !== "—") value = "₹" + value;
+            if (key === "created_at" && value !== "—") value = new Date(value).toLocaleString("en-IN");
+            return `<div class="detail-item"><strong>${escapeHtml(labels[key] || key.replace(/_/g, " "))}</strong>${escapeHtml(value)}</div>`;
+          }).join("")}
+        </div>
+      `;
+
+      const resendBtn = document.getElementById("modalResendBtn");
+      resendBtn.onclick = () => resendRegistrationEmail(registrationId);
+      resendBtn.disabled = !row.email;
+
+      document.getElementById("detailsModal").style.display = "block";
+    }
+
+    function closeDetails() {
+      document.getElementById("detailsModal").style.display = "none";
+    }
+
+    async function resendRegistrationEmail(registrationId) {
+      const row = allRegistrations.find(r => String(r.registration_id) === String(registrationId));
+      if (!row || !row.email) {
+        alert("No email address is available for this registration.");
+        return;
+      }
+
+      if (!confirm(`Resend the payment/registration email to ${row.email}?`)) return;
+
+      const btn = document.getElementById("modalResendBtn");
+      btn.disabled = true;
+      btn.textContent = "Sending...";
+
+      try {
+        const { data: emailResult, error: sendError } =
+          await supabaseClient.functions.invoke("send-payment-email", {
+            body: {
+              email: row.email,
+              registration_id: row.registration_id
+            }
+          });
+
+        if (sendError) throw sendError;
+
+        console.log("Email resend result:", emailResult);
+        alert("Email sent successfully.");
+      } catch (error) {
+        console.error("Email resend error:", error);
+        alert("Could not send the email: " + (error.message || "Unknown error"));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "📧 Resend Email";
+      }
+    }
+
     function renderTable() {
       const tbody = document.querySelector("#registrationsTable tbody");
       const rows = filteredRegistrations();
@@ -238,10 +386,15 @@
 
       rows.forEach(row => {
         const tr = document.createElement("tr");
-        let actionHTML = row.payment_status === "PENDING"
+        let paymentHTML = row.payment_status === "PENDING"
           ? `<button class="paid-btn" onclick="changePaymentStatus('${escapeJs(row.registration_id)}', 'PAID')">Mark PAID</button>
              <button class="reject-btn" onclick="changePaymentStatus('${escapeJs(row.registration_id)}', 'REJECTED')">Reject</button>`
           : `<strong>${escapeHtml(row.payment_status)}</strong>`;
+
+        let actionHTML = `
+          <button class="view-btn" onclick="showDetails('${escapeJs(row.registration_id)}')">View Details</button>
+          <button class="resend-btn" onclick="resendRegistrationEmail('${escapeJs(row.registration_id)}')">📧 Resend Email</button>
+        `;
 
         tr.innerHTML = `
           <td>${escapeHtml(row.registration_id)}</td>
@@ -251,7 +404,7 @@
           <td>${escapeHtml(row.contact_number)}</td>
           <td>${escapeHtml(row.event_name)}</td>
           <td>₹${escapeHtml(row.amount)}</td>
-          <td>${escapeHtml(row.payment_status)}</td>
+          <td>${paymentHTML}</td>
           <td>${actionHTML}</td>`;
         tbody.appendChild(tr);
       });
