@@ -251,7 +251,7 @@
   try {
     const { data, error } =
       await window.supabaseClient.rpc(
-        "check_registration_details",
+        "check_registration_status",
         {
           p_registration_id: registrationId
         }
