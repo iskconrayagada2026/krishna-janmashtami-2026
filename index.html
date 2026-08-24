@@ -1140,38 +1140,28 @@
       <ul>
 
         <li>
-          <strong>Krishna Vesa Competition</strong>
-          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
-            Class 1st to 6th
-          </span>
+          <strong>Krishna Vesa Competition</strong><br>
+          <span class="competition-class">1st to 6th class</span>
         </li>
 
         <li>
-          <strong>Bhagavad Gita Shloka Recitation</strong>
-          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
-            Class 6th to 10th
-          </span>
+          <strong>Bhagavad Gita Shloka Recitation</strong><br>
+          <span class="competition-class">6th to 10th class</span>
         </li>
 
         <li>
-          <strong>Krishna Song / Bhajan Singing</strong>
-          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
-            Class 6th to 10th
-          </span>
+          <strong>Krishna Song / Bhajan Singing</strong><br>
+          <span class="competition-class">6th to 10th class</span>
         </li>
 
         <li>
-          <strong>Dance Event on Krishna's Song</strong>
-          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
-            Class 6th to 12th
-          </span>
+          <strong>Dance Event on Krishna's Song</strong><br>
+          <span class="competition-class">6th to 12th class</span>
         </li>
 
         <li>
-          <strong>Krishna Drawing Competition</strong>
-          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
-            Class 1st to 6th
-          </span>
+          <strong>Krishna Drawing Competition</strong><br>
+          <span class="competition-class">1st to 6th class</span>
         </li>
 
       </ul>
@@ -1230,16 +1220,33 @@
         >
 
 
-        <label for="className">
-          Class / Age Group
+        <label for="event">
+          Competition
         </label>
 
-        <input
+        <select
+          id="event"
+          required
+        >
+          <option value="">Select competition</option>
+          <option>Krishna Vesa Competition</option>
+          <option>Bhagavad Gita Shloka Recitation</option>
+          <option>Krishna Song / Bhajan Singing</option>
+          <option>Dance Event on Krishna's Song</option>
+          <option>Krishna Drawing Competition</option>
+        </select>
+
+        <label for="className">
+          Class
+        </label>
+
+        <select
           id="className"
           required
-          maxlength="50"
-          placeholder="Example: Class 6 / Age 12"
+          disabled
         >
+          <option value="">Select competition first</option>
+        </select>
 
 
         <label for="institution">
@@ -1280,40 +1287,7 @@
         >
 
 
-        <label for="event">
-          Competition
-        </label>
 
-        <select
-          id="event"
-          required
-        >
-
-          <option value="">
-            Select competition
-          </option>
-
-          <option>
-            Krishna Vesa Competition
-          </option>
-
-          <option>
-            Bhagavad Gita Shloka Recitation
-          </option>
-
-          <option>
-            Krishna Song / Bhajan Singing
-          </option>
-
-          <option>
-            Dance Event on Krishna's Song
-          </option>
-
-          <option>
-            Krishna Drawing Competition
-          </option>
-
-        </select>
 
 
         <!-- =================================
@@ -1558,6 +1532,43 @@
       }
     );
 
+
+    /* =================================
+       COMPETITION-WISE CLASS OPTIONS
+       ================================= */
+
+    const eventSelect = document.getElementById("event");
+    const classSelect = document.getElementById("className");
+
+    const classOptions = {
+      "Krishna Vesa Competition": ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"],
+      "Bhagavad Gita Shloka Recitation": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10"],
+      "Krishna Song / Bhajan Singing": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10"],
+      "Dance Event on Krishna's Song": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"],
+      "Krishna Drawing Competition": ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"]
+    };
+
+    eventSelect.addEventListener("change", () => {
+      const options = classOptions[eventSelect.value] || [];
+
+      classSelect.innerHTML = "";
+
+      if (!options.length) {
+        classSelect.disabled = true;
+        classSelect.innerHTML = '<option value="">Select competition first</option>';
+        return;
+      }
+
+      classSelect.disabled = false;
+      classSelect.innerHTML = '<option value="">Select class</option>';
+
+      options.forEach((className) => {
+        const option = document.createElement("option");
+        option.value = className;
+        option.textContent = className;
+        classSelect.appendChild(option);
+      });
+    });
 
     /* =================================
        REGISTRATION
@@ -2009,6 +2020,12 @@
 
 
           <style>
+    .competition-class {
+      font-size: 0.92em;
+      font-weight: 600;
+      opacity: 0.85;
+    }
+
 
             * {
               box-sizing:border-box;
