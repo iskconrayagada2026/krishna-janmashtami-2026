@@ -1545,6 +1545,48 @@
 
 
     /* =================================
+       REGISTRATION DEADLINE
+       Registration remains open through
+       August 30, 2026 and closes after
+       11:59 PM IST.
+       ================================= */
+
+    const registrationDeadline =
+      new Date("2026-08-30T23:59:59+05:30");
+
+    function updateRegistrationAvailability() {
+      const now = new Date();
+      const registrationOpen = now <= registrationDeadline;
+
+      const form = document.getElementById("registrationForm");
+      const submitBtn = document.getElementById("submitBtn");
+
+      if (!registrationOpen) {
+        form.querySelectorAll("input, select").forEach((field) => {
+          field.disabled = true;
+        });
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "🔒 Registration Closed";
+
+        const notice = document.createElement("div");
+        notice.className = "error";
+        notice.style.display = "block";
+        notice.style.marginBottom = "15px";
+        notice.innerHTML =
+          "<strong>🔒 Registration Closed</strong><br>" +
+          "Registration for the Krishna Janmashtami Cultural Contest 2026 " +
+          "closed after 30 August 2026 at 11:59 PM.<br><br>" +
+          "You can still use <strong>Check Payment Status</strong> below " +
+          "to check an existing registration.";
+        form.insertBefore(notice, form.firstChild);
+      }
+    }
+
+    updateRegistrationAvailability();
+    setInterval(updateRegistrationAvailability, 30000);
+
+    /* =================================
        REGISTRATION
        ================================= */
 
@@ -1577,6 +1619,14 @@
       async (e) => {
 
         e.preventDefault();
+
+        if (new Date() > registrationDeadline) {
+          alert(
+            "Registration is closed. The deadline was 30 August 2026 at 11:59 PM."
+          );
+          updateRegistrationAvailability();
+          return;
+        }
 
 
         success.style.display =
