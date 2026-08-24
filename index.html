@@ -1140,23 +1140,38 @@
       <ul>
 
         <li>
-          Krishna Vesa Competition
+          <strong>Krishna Vesa Competition</strong>
+          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
+            Class 1st to 6th
+          </span>
         </li>
 
         <li>
-          Bhagavad Gita Shloka Recitation
+          <strong>Bhagavad Gita Shloka Recitation</strong>
+          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
+            Class 6th to 10th
+          </span>
         </li>
 
         <li>
-          Krishna Song / Bhajan Singing
+          <strong>Krishna Song / Bhajan Singing</strong>
+          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
+            Class 6th to 10th
+          </span>
         </li>
 
         <li>
-          Dance Event on Krishna's Song
+          <strong>Dance Event on Krishna's Song</strong>
+          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
+            Class 6th to 12th
+          </span>
         </li>
 
         <li>
-          Krishna Drawing Competition
+          <strong>Krishna Drawing Competition</strong>
+          <span style="display:block; font-size:0.9em; margin-top:3px; font-weight:600;">
+            Class 1st to 6th
+          </span>
         </li>
 
       </ul>
@@ -1215,33 +1230,16 @@
         >
 
 
-        <label for="event">
-          Competition
-        </label>
-
-        <select
-          id="event"
-          required
-        >
-          <option value="">Select competition</option>
-          <option>Krishna Vesa Competition</option>
-          <option>Bhagavad Gita Shloka Recitation</option>
-          <option>Krishna Song / Bhajan Singing</option>
-          <option>Dance Event on Krishna's Song</option>
-          <option>Krishna Drawing Competition</option>
-        </select>
-
         <label for="className">
-          Class
+          Class / Age Group
         </label>
 
-        <select
+        <input
           id="className"
           required
-          disabled
+          maxlength="50"
+          placeholder="Example: Class 6 / Age 12"
         >
-          <option value="">Select competition first</option>
-        </select>
 
 
         <label for="institution">
@@ -1282,7 +1280,40 @@
         >
 
 
+        <label for="event">
+          Competition
+        </label>
 
+        <select
+          id="event"
+          required
+        >
+
+          <option value="">
+            Select competition
+          </option>
+
+          <option>
+            Krishna Vesa Competition
+          </option>
+
+          <option>
+            Bhagavad Gita Shloka Recitation
+          </option>
+
+          <option>
+            Krishna Song / Bhajan Singing
+          </option>
+
+          <option>
+            Dance Event on Krishna's Song
+          </option>
+
+          <option>
+            Krishna Drawing Competition
+          </option>
+
+        </select>
 
 
         <!-- =================================
@@ -1527,43 +1558,6 @@
       }
     );
 
-
-    /* =================================
-       COMPETITION-WISE CLASS OPTIONS
-       ================================= */
-
-    const eventSelect = document.getElementById("event");
-    const classSelect = document.getElementById("className");
-
-    const classOptions = {
-      "Krishna Vesa Competition": ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"],
-      "Bhagavad Gita Shloka Recitation": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10"],
-      "Krishna Song / Bhajan Singing": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10"],
-      "Dance Event on Krishna's Song": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"],
-      "Krishna Drawing Competition": ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"]
-    };
-
-    eventSelect.addEventListener("change", () => {
-      const options = classOptions[eventSelect.value] || [];
-
-      classSelect.innerHTML = "";
-
-      if (!options.length) {
-        classSelect.disabled = true;
-        classSelect.innerHTML = '<option value="">Select competition first</option>';
-        return;
-      }
-
-      classSelect.disabled = false;
-      classSelect.innerHTML = '<option value="">Select class</option>';
-
-      options.forEach((className) => {
-        const option = document.createElement("option");
-        option.value = className;
-        option.textContent = className;
-        classSelect.appendChild(option);
-      });
-    });
 
     /* =================================
        REGISTRATION
