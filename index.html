@@ -1614,6 +1614,43 @@
       );
 
 
+    /* TEMPORARY TEST MODE: show registration as CLOSED immediately.
+       Remove this block before the final Aug 30 deployment. */
+    const TEST_REGISTRATION_CLOSED = true;
+
+    if (TEST_REGISTRATION_CLOSED) {
+      const registrationSection = form.closest(".card");
+      const registrationInputs = form.querySelectorAll("input, select, button");
+      registrationInputs.forEach((el) => {
+        if (el.id !== "statusRegistrationId" && el.id !== "receiptBtn") {
+          el.disabled = true;
+        }
+      });
+
+      const closedNotice = document.createElement("div");
+      closedNotice.style.cssText = `
+        margin: 0 0 18px;
+        padding: 18px;
+        border-radius: 14px;
+        background: #fff0f3;
+        color: #9b3030;
+        border: 1px solid #efc8d0;
+        text-align: center;
+        font-weight: 800;
+        line-height: 1.6;
+      `;
+      closedNotice.innerHTML = `
+        🔒 Registration Closed<br>
+        <span style="font-size:14px;font-weight:600;">
+          Registration for Krishna Janmashtami Cultural Contest 2026 is currently closed.
+        </span>
+      `;
+      form.prepend(closedNotice);
+
+      const submitBtn = document.getElementById("submitBtn");
+      if (submitBtn) submitBtn.style.display = "none";
+    }
+
     form.addEventListener(
       "submit",
       async (e) => {
