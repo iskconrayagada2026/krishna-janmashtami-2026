@@ -1215,16 +1215,33 @@
         >
 
 
-        <label for="className">
-          Class / Age Group
+        <label for="event">
+          Competition
         </label>
 
-        <input
+        <select
+          id="event"
+          required
+        >
+          <option value="">Select competition</option>
+          <option>Krishna Vesa Competition</option>
+          <option>Bhagavad Gita Shloka Recitation</option>
+          <option>Krishna Song / Bhajan Singing</option>
+          <option>Dance Event on Krishna's Song</option>
+          <option>Krishna Drawing Competition</option>
+        </select>
+
+        <label for="className">
+          Class
+        </label>
+
+        <select
           id="className"
           required
-          maxlength="50"
-          placeholder="Example: Class 6 / Age 12"
+          disabled
         >
+          <option value="">Select competition first</option>
+        </select>
 
 
         <label for="institution">
@@ -1265,40 +1282,7 @@
         >
 
 
-        <label for="event">
-          Competition
-        </label>
 
-        <select
-          id="event"
-          required
-        >
-
-          <option value="">
-            Select competition
-          </option>
-
-          <option>
-            Krishna Vesa Competition
-          </option>
-
-          <option>
-            Bhagavad Gita Shloka Recitation
-          </option>
-
-          <option>
-            Krishna Song / Bhajan Singing
-          </option>
-
-          <option>
-            Dance Event on Krishna's Song
-          </option>
-
-          <option>
-            Krishna Drawing Competition
-          </option>
-
-        </select>
 
 
         <!-- =================================
@@ -1545,46 +1529,41 @@
 
 
     /* =================================
-       REGISTRATION DEADLINE
-       Registration remains open through
-       August 30, 2026 and closes after
-       11:59 PM IST.
+       COMPETITION-WISE CLASS OPTIONS
        ================================= */
 
-    const registrationDeadline =
-      new Date("2026-08-30T23:59:59+05:30");
+    const eventSelect = document.getElementById("event");
+    const classSelect = document.getElementById("className");
 
-    function updateRegistrationAvailability() {
-      const now = new Date();
-      const registrationOpen = now <= registrationDeadline;
+    const classOptions = {
+      "Krishna Vesa Competition": ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"],
+      "Bhagavad Gita Shloka Recitation": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10"],
+      "Krishna Song / Bhajan Singing": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10"],
+      "Dance Event on Krishna's Song": ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"],
+      "Krishna Drawing Competition": ["Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"]
+    };
 
-      const form = document.getElementById("registrationForm");
-      const submitBtn = document.getElementById("submitBtn");
+    eventSelect.addEventListener("change", () => {
+      const options = classOptions[eventSelect.value] || [];
 
-      if (!registrationOpen) {
-        form.querySelectorAll("input, select").forEach((field) => {
-          field.disabled = true;
-        });
+      classSelect.innerHTML = "";
 
-        submitBtn.disabled = true;
-        submitBtn.textContent = "🔒 Registration Closed";
-
-        const notice = document.createElement("div");
-        notice.className = "error";
-        notice.style.display = "block";
-        notice.style.marginBottom = "15px";
-        notice.innerHTML =
-          "<strong>🔒 Registration Closed</strong><br>" +
-          "Registration for the Krishna Janmashtami Cultural Contest 2026 " +
-          "closed after 30 August 2026 at 11:59 PM.<br><br>" +
-          "You can still use <strong>Check Payment Status</strong> below " +
-          "to check an existing registration.";
-        form.insertBefore(notice, form.firstChild);
+      if (!options.length) {
+        classSelect.disabled = true;
+        classSelect.innerHTML = '<option value="">Select competition first</option>';
+        return;
       }
-    }
 
-    updateRegistrationAvailability();
-    setInterval(updateRegistrationAvailability, 30000);
+      classSelect.disabled = false;
+      classSelect.innerHTML = '<option value="">Select class</option>';
+
+      options.forEach((className) => {
+        const option = document.createElement("option");
+        option.value = className;
+        option.textContent = className;
+        classSelect.appendChild(option);
+      });
+    });
 
     /* =================================
        REGISTRATION
@@ -1619,14 +1598,6 @@
       async (e) => {
 
         e.preventDefault();
-
-        if (new Date() > registrationDeadline) {
-          alert(
-            "Registration is closed. The deadline was 30 August 2026 at 11:59 PM."
-          );
-          updateRegistrationAvailability();
-          return;
-        }
 
 
         success.style.display =
