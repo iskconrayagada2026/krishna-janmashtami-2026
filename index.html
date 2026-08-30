@@ -1205,6 +1205,40 @@
       </h2>
 
 
+      <div
+        id="registrationClosed"
+        style="
+          display:none;
+          padding:22px;
+          margin:15px 0;
+          border-radius:16px;
+          background:linear-gradient(145deg,#fff0f3,#fff8e7);
+          border:1px solid #e9c7d0;
+          text-align:center;
+          line-height:1.7;
+        "
+      >
+        <div style="font-size:42px;">🔒</div>
+        <h3 style="margin:8px 0;color:#bd4141;">
+          Registration Closed
+        </h3>
+        <p style="margin:0;">
+          Registration for the
+          <strong>Krishna Janmashtami Cultural Contest 2026</strong>
+          is now closed.
+        </p>
+        <p style="margin:10px 0 0;">
+          The last date for registration was
+          <strong>02 September 2026</strong>.
+        </p>
+        <p class="small" style="margin-top:12px;">
+          For any queries, please contact
+          <strong>6297209829</strong>.
+        </p>
+      </div>
+
+      <div id="registrationArea">
+
       <form id="registrationForm">
 
 
@@ -1366,6 +1400,8 @@
         ></div>
 
       </form>
+
+      </div>
 
 
       <!-- =================================
@@ -1619,6 +1655,24 @@
 
         btn.textContent =
           "Submitting...";
+
+        // Registration deadline: 02 September 2026, 11:59 PM IST.
+        const registrationDeadline =
+          new Date("2026-09-02T23:59:59+05:30");
+
+        if (new Date() > registrationDeadline) {
+          error.innerHTML =
+            "⏰ Registration is now closed.<br><br>" +
+            "The last date for registration was " +
+            "<strong>02 September 2026</strong>.";
+
+          error.style.display = "block";
+          btn.disabled = true;
+          btn.textContent = "🔒 Registration Closed";
+          checkRegistrationDeadline();
+          return;
+        }
+
 
 
         try {
@@ -2321,7 +2375,55 @@
 
     }
 
-  </script>
+  
+    /* =================================
+       AUTOMATIC REGISTRATION DEADLINE
+       02 September 2026 — 11:59 PM IST
+       ================================= */
+
+    function checkRegistrationDeadline() {
+      const now = new Date();
+      const deadline =
+        new Date("2026-09-02T23:59:59+05:30");
+
+      const registrationArea =
+        document.getElementById("registrationArea");
+
+      const registrationClosed =
+        document.getElementById("registrationClosed");
+
+      const submitBtn =
+        document.getElementById("submitBtn");
+
+      if (!registrationArea || !registrationClosed) {
+        return;
+      }
+
+      if (now > deadline) {
+        registrationArea.style.display = "none";
+        registrationClosed.style.display = "block";
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "🔒 Registration Closed";
+        }
+      } else {
+        registrationArea.style.display = "block";
+        registrationClosed.style.display = "none";
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "🪷 Submit Registration";
+        }
+      }
+    }
+
+    checkRegistrationDeadline();
+
+    // Re-check every 30 seconds so an open page closes automatically.
+    setInterval(checkRegistrationDeadline, 30000);
+
+</script>
 
 </body>
 
